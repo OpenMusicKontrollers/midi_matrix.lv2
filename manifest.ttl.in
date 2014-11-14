@@ -1,0 +1,13 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+
+<http://open-music-kontrollers.ch/midi_matrixplex#channel>
+	a lv2:Plugin ;
+	lv2:binary <midi_matrixplex@LIB_EXT@> ;
+	ui:ui <http://open-music-kontrollers.ch/midi_matrixplex#channel/ui> ;
+	rdfs:seeAlso <midi_matrixplex.ttl> .
+
+<http://open-music-kontrollers.ch/midi_matrixplex#channel/ui>
+	a ui:X11UI ;
+	ui:binary <midi_matrixplex_ui@LIB_EXT@> .
