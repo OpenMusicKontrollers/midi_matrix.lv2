@@ -50,5 +50,23 @@ install(TARGETS midi_matrixplex_ui DESTINATION ${DEST})
 
 configure_file("${PROJECT_SOURCE_DIR}/manifest.ttl.in" "${PROJECT_BINARY_DIR}/manifest.ttl")
 
+find_program (EDJE_CC NAMES edje_cc)
+if (EDJE_CC_NOTFOUND)
+  message (SEND_ERROR "edje_cc not found")
+else (EDJE_CC_NOTFOUND)
+  message (STATUS "edje_cc found: " ${EDJE_CC})
+endif (EDJE_CC_NOTFOUND)
+
+add_custom_command(
+	OUTPUT "${PROJECT_BINARY_DIR}/midi_matrixplex.edj"
+	COMMAND ${EDJE_CC} ARGS
+		"-fd" "${PROJECT_SOURCE_DIR}"
+		"-id" "${PROJECT_SOURCE_DIR}"
+		"${PROJECT_SOURCE_DIR}/midi_matrixplex.edc"
+		"${PROJECT_BINARY_DIR}/midi_matrixplex.edj"
+	MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/midi_matrixplex.edc")
+add_custom_target(THEME ALL DEPENDS "${PROJECT_BINARY_DIR}/midi_matrixplex.edj")
+
 install(FILES "${PROJECT_BINARY_DIR}/manifest.ttl" DESTINATION ${DEST})
+install (FILES "${PROJECT_BINARY_DIR}/midi_matrixplex.edj" DESTINATION ${DEST})
 install(FILES "${PROJECT_SOURCE_DIR}/midi_matrixplex.ttl" DESTINATION ${DEST})

@@ -159,7 +159,7 @@ extension_data(const char* uri)
 }
 
 const LV2_Descriptor lv2_midi_matrixplex_channel = {
-	.URI						= "http://open-music-kontrollers.ch/midi_matrixplex#channel",
+	.URI						= MIDI_MATRIXPLEX_CHANNEL_URI,
 	.instantiate		= instantiate,
 	.connect_port		= connect_port,
 	.activate				= activate,
