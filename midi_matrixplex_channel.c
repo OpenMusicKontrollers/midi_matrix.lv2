@@ -149,6 +149,8 @@ static void
 cleanup(LV2_Handle instance)
 {
 	Handle *handle = (Handle *)instance;
+
+	free(handle);
 }
 
 static const void*

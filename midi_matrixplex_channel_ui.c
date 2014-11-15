@@ -6,13 +6,13 @@
 #include <Ecore_Evas.h>
 #include <Edje.h>
 
+#define TILE_SIZE 24
+
 typedef struct _UI UI;
 
 struct _UI {
 	LV2UI_Write_Function write_function;
 	LV2UI_Controller controller;
-	LV2UI_Idle_Interface idle_ext;
-	LV2UI_Resize resize_ext;
 
 	int w, h;
 	Ecore_Evas *ee;
@@ -24,8 +24,6 @@ struct _UI {
 	uint16_t mask [0x10];
 };
 
-static UI *ui_ptr;
-
 static int
 idle_cb(LV2UI_Handle handle)
 {
@@ -35,6 +33,10 @@ idle_cb(LV2UI_Handle handle)
 	
 	return 0;
 }
+
+static const LV2UI_Idle_Interface idle_ext = {
+	.idle = idle_cb
+};
 
 static int
 resize_cb(LV2UI_Feature_Handle handle, int w, int h)
@@ -245,8 +247,8 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 	if(!ui)
 		return NULL;
 
-	ui->w = 30 * 0x11;
-	ui->h = 30 * 0x11;
+	ui->w = TILE_SIZE * 0x11;
+	ui->h = TILE_SIZE * 0x11;
 	ui->write_function = write_function;
 	ui->controller = controller;
 
@@ -329,12 +331,6 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 		ui->tiles[0x10][i] = label;
 	}
 	
-	ui->idle_ext.idle = idle_cb;
-	ui->resize_ext.handle = ui;
-	ui->resize_ext.ui_resize = resize_cb;
-
-	ui_ptr = ui; // FIXME bloddy hack
-
 	return ui;
 }
 
@@ -347,15 +343,7 @@ cleanup(LV2UI_Handle handle)
 	{
 		ecore_evas_hide(ui->ee);
 
-		int i, j;
-		for(i=0; i<0x10; i++)
-		{
-			for(j=0; j<0x10; j++)
-				evas_object_del(ui->tiles[i][j]);
-
-			evas_object_del(ui->tiles[i][0x10]);
-			evas_object_del(ui->tiles[0x10][i]);
-		}
+		evas_object_table_clear(ui->grid, EINA_TRUE);
 		evas_object_del(ui->grid);
 		evas_object_del(ui->bg);
 		ecore_evas_free(ui->ee);
@@ -363,11 +351,11 @@ cleanup(LV2UI_Handle handle)
 		free(ui);
 	}
 
-	edje_init();
-	ecore_evas_init();
-	evas_init();
-	ecore_init();
-	eina_init();
+	edje_shutdown();
+	ecore_evas_shutdown();
+	evas_shutdown();
+	ecore_shutdown();
+	eina_shutdown();
 }
 
 static void
@@ -387,10 +375,8 @@ port_event(LV2UI_Handle handle, uint32_t i, uint32_t buffer_size, uint32_t forma
 static const void *
 extension_data(const char *uri)
 {
-	if (!strcmp(uri, LV2_UI__idleInterface))
-		return &ui_ptr->idle_ext;
-	if (!strcmp(uri, LV2_UI__resize))
-		return &ui_ptr->resize_ext;
+	if(!strcmp(uri, LV2_UI__idleInterface))
+		return &idle_ext;
 		
 	return NULL;
 }
