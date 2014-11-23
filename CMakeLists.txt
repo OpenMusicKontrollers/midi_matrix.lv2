@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 2.8)
 project(midi_matrix.lv2)
 
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/libosc)
 
 set(DEST lib/lv2/midi_matrix.lv2)
 set(LIB_EXT ".so")
@@ -70,5 +69,5 @@ add_custom_command(
 add_custom_target(THEME ALL DEPENDS "${PROJECT_BINARY_DIR}/midi_matrix.edj")
 
 install(FILES "${PROJECT_BINARY_DIR}/manifest.ttl" DESTINATION ${DEST})
-install (FILES "${PROJECT_BINARY_DIR}/midi_matrix.edj" DESTINATION ${DEST})
+install(FILES "${PROJECT_BINARY_DIR}/midi_matrix.edj" DESTINATION ${DEST})
 install(FILES "${PROJECT_SOURCE_DIR}/midi_matrix.ttl" DESTINATION ${DEST})

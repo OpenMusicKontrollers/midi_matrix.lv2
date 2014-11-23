@@ -24,10 +24,10 @@ The Midi Matrix - Channel Filter is a 3-in-1 filter plugin with a simple UI enab
 
 ### Build / install
 
-	git clone git@github.com:OpenMusicKontrollers/midi_matrix.lv2.git midi_matrix.lv2
+	git clone https://github.com/OpenMusicKontrollers/midi_matrix.lv2.git
 	cd midi_matrix.lv2
 	mkdir build
 	cd build
-	cmake -DCMAKE_C_FLAGS="-std=gnu99"
+	cmake -DCMAKE_C_FLAGS="-std=gnu99" ..
 	make
 	sudo make install
