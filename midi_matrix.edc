@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2014 Hanspeter Portner (dev@open-music-kontrollers.ch)
+ * 
+ * This GUI theme and its accompanying resources are released under a
+ * Creative Commons Attribution Non-Commercial Share-Alike License 3.0
+ */
+
+#define MIDI_MATRIX_URI											"http://open-music-kontrollers.ch/lv2/midi_matrix"
+
+#if 0
+#	define USE_TRANSITIONS
+#endif
+
+collections {
+#	include <midi_matrix_channel_filter.edc>
+}

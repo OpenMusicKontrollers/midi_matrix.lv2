@@ -1,4 +1,27 @@
-#include <midi_matrixplex.h>
+/*
+ * Copyright (c) 2014 Hanspeter Portner (dev@open-music-kontrollers.ch)
+ * 
+ * This software is provided 'as-is', without any express or implied
+ * warranty. In no event will the authors be held liable for any damages
+ * arising from the use of this software.
+ * 
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ * 
+ *     1. The origin of this software must not be misrepresented; you must not
+ *     claim that you wrote the original software. If you use this software
+ *     in a product, an acknowledgment in the product documentation would be
+ *     appreciated but is not required.
+ * 
+ *     2. Altered source versions must be plainly marked as such, and must not be
+ *     misrepresented as being the original software.
+ * 
+ *     3. This notice may not be removed or altered from any source
+ *     distribution.
+ */
+
+#include <midi_matrix.h>
 
 typedef struct _Handle Handle;
 
@@ -31,7 +54,7 @@ instantiate(const LV2_Descriptor* descriptor, double rate, const char *bundle_pa
 
 	if(!handle->map)
 	{
-		fprintf(stderr, "midi_matrixplex.lv2 error: Host does not support urid:map\n");
+		fprintf(stderr, "%s: Host does not support urid:map\n", descriptor->URI);
 		free(handle);
 		return NULL;
 	}
@@ -92,15 +115,18 @@ run(LV2_Handle instance, uint32_t sample_count)
 	if(!handle->midi_in || !handle->midi_out)
 		return;
 
+	// fill channel mask array
 	int i;
 	for(i=0x0; i<0x10; i++)
-		handle->mask[i] = (uint16_t)handle->control[i][0];
+		handle->mask[i] = (uint16_t)*handle->control[i];
 
+	// prepare midi atom forge
 	const uint32_t capacity = handle->midi_out->atom.size;
 	LV2_Atom_Forge *forge = &handle->forge;
 	lv2_atom_forge_set_buffer(forge, (uint8_t *)handle->midi_out, capacity);
 	lv2_atom_forge_sequence_head(forge, &handle->frame, 0);
 
+	// process incoming events
 	LV2_Atom_Event *ev = NULL;
 	LV2_ATOM_SEQUENCE_FOREACH(handle->midi_in, ev)
 	{
@@ -110,19 +136,19 @@ run(LV2_Handle instance, uint32_t sample_count)
 			uint32_t len = ev->body.size;
 			uint8_t *buf = (uint8_t *)(ev+1);
 
-			uint8_t src = buf[0] & 0x0f;
-			if(handle->mask[src]) // are there any outputs at all?
+			uint8_t src = buf[0] & 0x0f; // source channel
+			if(handle->mask[src]) // are there any active output channels at all for this input channel?
 			{
 				uint8_t dst;
 				uint16_t mask;
 				for(dst=0x0, mask=0x1; dst<0x10; dst++, mask=mask<<1)
 				{
-					if(handle->mask[src] & mask)
+					if(handle->mask[src] & mask) // is this output channel active?
 					{
 						LV2_Atom midiatom;
 						midiatom.type = handle->uris.midi_MidiEvent;
 						midiatom.size = len;
-						uint8_t m = (buf[0] & 0xf0) | dst;
+						uint8_t m = (buf[0] & 0xf0) | dst; // rewrite channel number
 						
 						lv2_atom_forge_frame_time(forge, frames);
 						lv2_atom_forge_raw(forge, &midiatom, sizeof(LV2_Atom));
@@ -160,8 +186,8 @@ extension_data(const char* uri)
 	return NULL;
 }
 
-const LV2_Descriptor lv2_midi_matrixplex_channel = {
-	.URI						= MIDI_MATRIXPLEX_CHANNEL_URI,
+const LV2_Descriptor lv2_midi_matrix_channel_filter = {
+	.URI						= MIDI_MATRIX_CHANNEL_FILTER_URI,
 	.instantiate		= instantiate,
 	.connect_port		= connect_port,
 	.activate				= activate,

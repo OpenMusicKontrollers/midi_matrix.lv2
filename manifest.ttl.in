@@ -2,12 +2,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
 
-<http://open-music-kontrollers.ch/midi_matrixplex#channel>
+<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter>
 	a lv2:Plugin ;
-	lv2:binary <midi_matrixplex@LIB_EXT@> ;
-	ui:ui <http://open-music-kontrollers.ch/midi_matrixplex#channel/ui> ;
-	rdfs:seeAlso <midi_matrixplex.ttl> .
+	lv2:binary <midi_matrix@LIB_EXT@> ;
+	ui:ui <http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/ui> ;
+	rdfs:seeAlso <midi_matrix.ttl> .
 
-<http://open-music-kontrollers.ch/midi_matrixplex#channel/ui>
+<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/ui>
 	a ui:X11UI ;
-	ui:binary <midi_matrixplex_ui@LIB_EXT@> .
+	ui:binary <midi_matrix_ui@LIB_EXT@> ;
+	rdfs:seeAlso <midi_matrix.ttl> .
