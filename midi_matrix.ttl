@@ -31,7 +31,6 @@
 <http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter>
 	a lv2:Plugin,
 		lv2:MixerPlugin;
-	doap:maintainer <http://open-music-kontrollers.ch#me> ;
 	doap:name "MIDI Channel Matrix Multiplexer and Demultiplexer" ;
 	doap:license <http://opensource.org/licenses/isc> ;
 	lv2:project <http://open-music-kontrollers.ch/lv2/midi_matrix> ;
