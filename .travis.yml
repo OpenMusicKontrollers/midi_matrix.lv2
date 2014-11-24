@@ -14,6 +14,6 @@ install:
  - sudo apt-get install -y libefl-dev libsndfile1-dev
  - pushd lv2-1.10.0 && ./waf configure && ./waf build && sudo ./waf install && popd
 before_script:
- - mkdir build && pushd build && cmake -DCMAKE_C_FLAGS="-std=gnu99" -DUSE_RTMIDI=0 .. && popd
+ - mkdir build && pushd build && cmake -DCMAKE_C_FLAGS="-std=gnu99" .. && popd
 script:
  - pushd build && make && sudo make install && popd
