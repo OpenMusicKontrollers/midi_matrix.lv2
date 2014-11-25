@@ -40,7 +40,8 @@ group {
 				image {
 					normal: "encapsulation.png";
 					border: 12 12 12 12;
-					middle: 0;
+					middle: NONE;
+					scale_hint: STATIC;
 				}
 			}
 		}
@@ -173,9 +174,12 @@ group {
 			mouse_events: 1;
 			description {
 				state: "default" 0.0;
-				image.normal: "border.png";
-				image.border: 2 2 2 2;
-				image.middle: 0;
+				image {
+					normal: "border.png";
+					border: 2 2 2 2;
+					middle: NONE;
+					scale_hint: STATIC;
+				}
 				color: 255 255 255 0;
 			}
 			description {
@@ -367,9 +371,12 @@ group {
 			mouse_events: 1;
 			description {
 				state: "default" 0.0;
-				image.normal: "border.png";
-				image.border: 2 2 2 2;
-				image.middle: 0;
+				image {
+					normal: "border.png";
+					border: 2 2 2 2;
+					middle: NONE;
+					scale_hint: STATIC;
+				}
 				color: 255 255 255 0;
 			}
 			description {

@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <endian.h>
 
 #include "lv2/lv2plug.in/ns/ext/atom/atom.h"
 #include "lv2/lv2plug.in/ns/ext/atom/util.h"
