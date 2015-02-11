@@ -8,7 +8,7 @@
 @prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
 
 # Maintainer
-<http://open-music-kontrollers.ch#me>
+<http://open-music-kontrollers.ch/ventosus#me>
 	a foaf:Person ;
 	foaf:name "Hanspeter Portner" ;
 	foaf:mbox <dev@open-music-kontrollers.ch> ;
@@ -17,7 +17,7 @@
 # Project
 <http://open-music-kontrollers.ch/lv2/midi_matrix>
 	a doap:Project ;
-	doap:maintainer <http://open-music-kontrollers.ch#me> ;
+	doap:maintainer <http://open-music-kontrollers.ch/ventosus#me> ;
 	doap:name "Various MIDI Matrix Multiplexers and Demultiplexers" .
 
 # Plugin UI
