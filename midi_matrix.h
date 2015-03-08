@@ -40,5 +40,11 @@
 
 #define MIDI_MATRIX_CHANNEL_FILTER_URI			MIDI_MATRIX_URI"#channel_filter"
 #define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_CHANNEL_FILTER_URI"/ui"
+#define MIDI_MATRIX_CHANNEL_FILTER_EO_URI		MIDI_MATRIX_CHANNEL_FILTER_URI"/eo"
+
+const LV2_Descriptor lv2_midi_matrix_channel_filter;
+
+const LV2UI_Descriptor lv2_midi_matrix_channel_filter_ui;
+const LV2UI_Descriptor lv2_midi_matrix_channel_filter_eo;
 
 #endif // _MIDI_MATRIX_LV2_H

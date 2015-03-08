@@ -27,6 +27,9 @@
   lv2:optionalFeature ui:noUserResize ;
   lv2:extensionData ui:idleInterface, ui:showInterface .
 
+<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/eo>
+	a ui:EoUI .
+
 # Plugin
 <http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter>
 	a lv2:Plugin,

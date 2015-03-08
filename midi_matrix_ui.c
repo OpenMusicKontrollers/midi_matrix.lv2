@@ -23,8 +23,6 @@
 
 #include <midi_matrix.h>
 
-extern const LV2UI_Descriptor lv2_midi_matrix_channel_filter_ui;
-
 LV2_SYMBOL_EXPORT const LV2UI_Descriptor*
 lv2ui_descriptor(uint32_t index)
 {
@@ -32,6 +30,8 @@ lv2ui_descriptor(uint32_t index)
 	{
 		case 0:
 			return &lv2_midi_matrix_channel_filter_ui;
+		case 1:
+			return &lv2_midi_matrix_channel_filter_eo;
 		default:
 			return NULL;
 	}

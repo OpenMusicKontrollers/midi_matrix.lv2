@@ -75,7 +75,8 @@ _show_cb(LV2UI_Handle handle)
 	if(!ui)
 		return -1;
 
-	ecore_evas_show(ui->ee);
+	if(ui->ee)
+		ecore_evas_show(ui->ee);
 
 	return 0;
 }
@@ -88,7 +89,8 @@ _hide_cb(LV2UI_Handle handle)
 	if(!ui)
 		return -1;
 
-	ecore_evas_hide(ui->ee);
+	if(ui->ee)
+		ecore_evas_hide(ui->ee);
 
 	return 0;
 }
@@ -110,7 +112,8 @@ resize_cb(LV2UI_Feature_Handle handle, int w, int h)
 	ui->w = w;
 	ui->h = h;
 
-	ecore_evas_resize(ui->ee, ui->w, ui->h);
+	if(ui->ee)
+		ecore_evas_resize(ui->ee, ui->w, ui->h);
 	evas_object_resize(ui->theme, ui->w, ui->h);
   
   return 0;
@@ -432,6 +435,16 @@ _clear_changed(void *data, Evas_Object *edj, const char *emission, const char *s
 	}
 }
 
+static void
+_delete(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+	UI *ui = data;
+	
+	edje_object_part_unswallow(ui->theme, ui->grid);
+	evas_object_table_clear(ui->grid, EINA_TRUE);
+	evas_object_del(ui->grid);
+}
+
 static LV2UI_Handle
 instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const char *bundle_path, LV2UI_Write_Function write_function, LV2UI_Controller controller, LV2UI_Widget *widget, const LV2_Feature *const *features)
 {
@@ -467,13 +480,21 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 			resize = (LV2UI_Resize *)features[i]->data;
   }
 
-	ui->ee = ecore_evas_gl_x11_new(NULL, (Ecore_X_Window)parent, 0, 0, ui->w, ui->h);
-	if(!ui->ee)
-		ui->ee = ecore_evas_software_x11_new(NULL, (Ecore_X_Window)parent, 0, 0, ui->w, ui->h);
-	if(!ui->ee)
-		printf("could not start evas\n");
-	ui->e = ecore_evas_get(ui->ee);
-	ecore_evas_show(ui->ee);
+	if(descriptor == &lv2_midi_matrix_channel_filter_ui)
+	{
+		ui->ee = ecore_evas_gl_x11_new(NULL, (Ecore_X_Window)parent, 0, 0, ui->w, ui->h);
+		if(!ui->ee)
+			ui->ee = ecore_evas_software_x11_new(NULL, (Ecore_X_Window)parent, 0, 0, ui->w, ui->h);
+		if(!ui->ee)
+			printf("could not start evas\n");
+		ui->e = ecore_evas_get(ui->ee);
+		ecore_evas_show(ui->ee);
+	}
+	else if(descriptor == &lv2_midi_matrix_channel_filter_eo)
+	{
+		ui->ee = NULL;
+		ui->e = evas_object_evas_get((Evas_Object *)parent);
+	}
 
 	if(resize)
     resize->ui_resize(resize->handle, ui->w, ui->h);
@@ -483,6 +504,11 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 	
 	ui->theme = edje_object_add(ui->e);
 	edje_object_file_set(ui->theme, buf, MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/theme");
+	evas_object_event_callback_add(ui->theme, EVAS_CALLBACK_DEL, _delete, ui);
+	evas_object_size_hint_weight_set(ui->theme, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ui->theme, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_aspect_set(ui->theme, EVAS_ASPECT_CONTROL_BOTH,
+		ui->w, ui->h);
 	evas_object_resize(ui->theme, ui->w, ui->h);
 	evas_object_show(ui->theme);
 
@@ -498,9 +524,12 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 		{
 			Evas_Object *tile = edje_object_add(ui->e);
 			edje_object_file_set(tile, buf, MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/tile");
-			edje_object_signal_callback_add(tile, "in", MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_in, ui);
-			edje_object_signal_callback_add(tile, "out", MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_out, ui);
-			edje_object_signal_callback_add(tile, "changed", MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_changed, ui);
+			edje_object_signal_callback_add(tile, "in",
+				MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_in, ui);
+			edje_object_signal_callback_add(tile, "out",
+				MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_out, ui);
+			edje_object_signal_callback_add(tile, "changed",
+				MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _tile_changed, ui);
 			evas_object_size_hint_weight_set(tile, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 			evas_object_size_hint_align_set(tile, EVAS_HINT_FILL, EVAS_HINT_FILL);
 			evas_object_show(tile);
@@ -586,6 +615,11 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 	evas_object_size_hint_align_set(output_label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(output_label);
 	evas_object_table_pack(ui->grid, output_label, 0x11, 0, 1, 0x10);
+
+	if(ui->ee) // X11 UI
+		*(Evas_Object **)widget = NULL;
+	else // Eo UI
+		*(Evas_Object **)widget = ui->theme;
 	
 	return ui;
 }
@@ -597,13 +631,12 @@ cleanup(LV2UI_Handle handle)
 	
 	if(ui)
 	{
-		ecore_evas_hide(ui->ee);
-
-		edje_object_part_unswallow(ui->theme, ui->grid);
-		evas_object_table_clear(ui->grid, EINA_TRUE);
-		evas_object_del(ui->grid);
-		evas_object_del(ui->theme);
-		ecore_evas_free(ui->ee);
+		if(ui->ee)
+		{
+			ecore_evas_hide(ui->ee);
+			evas_object_del(ui->theme);
+			ecore_evas_free(ui->ee);
+		}
 		
 		free(ui);
 	}
@@ -646,4 +679,12 @@ const LV2UI_Descriptor lv2_midi_matrix_channel_filter_ui = {
 	.cleanup				= cleanup,
 	.port_event			= port_event,
 	.extension_data	= extension_data
+};
+
+const LV2UI_Descriptor lv2_midi_matrix_channel_filter_eo = {
+	.URI						= MIDI_MATRIX_CHANNEL_FILTER_EO_URI,
+	.instantiate		= instantiate,
+	.cleanup				= cleanup,
+	.port_event			= port_event,
+	.extension_data	= NULL
 };

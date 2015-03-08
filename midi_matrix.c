@@ -23,8 +23,6 @@
 
 #include <midi_matrix.h>
 
-extern const LV2_Descriptor lv2_midi_matrix_channel_filter;
-
 LV2_SYMBOL_EXPORT const LV2_Descriptor*
 lv2_descriptor(uint32_t index)
 {
