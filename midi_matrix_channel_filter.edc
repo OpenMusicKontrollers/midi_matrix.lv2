@@ -1,76 +1,29 @@
 /*
- * Copyright (c) 2014 Hanspeter Portner (dev@open-music-kontrollers.ch)
- * 
- * This GUI theme and its accompanying resources are released under a
- * Creative Commons Attribution Non-Commercial Share-Alike License 3.0
+ * Copyright (c) 2015 Hanspeter Portner (dev@open-music-kontrollers.ch)
+ *
+ * This is free software: you can redistribute it and/or modify
+ * it under the terms of the Artistic License 2.0 as published by
+ * The Perl Foundation.
+ *
+ * This source is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * Artistic License 2.0 for more details.
+ *
+ * You should have received a copy of the Artistic License 2.0
+ * along the source as a COPYING file. If not, obtain it from
+ * http://www.perlfoundation.org/artistic_license_2_0.
  */
 
 #define MIDI_MATRIX_CHANNEL_FILTER_URI			MIDI_MATRIX_URI"#channel_filter"
-#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_CHANNEL_FILTER_URI"/ui"
+#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_URI"#channel_filter_ui"
 
 images {
-	image: "encapsulation.png" COMP;
-	image: "omk_logo_256x256.png" COMP;
 	image: "border.png" COMP;
 }
 
 fonts {
 	font: "DejaVuSansMono-Bold.ttf" "default";
-}
-
-group {
-	name: MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/theme";
-
-	parts {
-		part {
-			name: "bg";
-			type: RECT;
-			mouse_events: 0;
-			description {
-				state: "default" 0.0;
-				color: 48 48 48 255;
-			}
-		}
-		part {
-			name: "encapsulation";
-			type: IMAGE;
-			mouse_events: 0;
-			description {
-				state: "default" 0.0;
-				image {
-					normal: "encapsulation.png";
-					border: 12 12 12 12;
-					middle: NONE;
-					scale_hint: STATIC;
-				}
-			}
-		}
-		part {
-			name: "logo";
-			type: IMAGE;
-			mouse_events: 0;
-			description {
-				state: "default" 0.0;
-				rel1.relative: 0.2 0.2;
-				rel2.relative: 0.8 0.8;
-				aspect: 1 1;
-				aspect_preference: BOTH;
-				image.normal: "omk_logo_256x256.png";
-				color: 255 255 255 16;
-			}
-		}
-		part {
-			name: "matrix";
-			type: SWALLOW;
-			mouse_events: 1;
-			repeat_events: 1;
-			description {
-				state: "default" 0.0;
-				rel1.offset: 12 12;
-				rel2.offset: -12 -12;
-			}
-		}
-	}
 }
 
 group {
@@ -81,11 +34,13 @@ group {
 			name: "default";
 			type: TEXT;
 			mouse_events: 0;
+			scale: 1;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				text {
 					text: "Input Channels";
-					size: 14;
+					size: 11;
 					align: 0.5 0.5;
 				}
 				color: 128 128 128 255;
@@ -104,6 +59,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.5 0.5;
 				rel2.relative: 0.5 0.5;
 			}
@@ -112,8 +68,10 @@ group {
 			name: "default";
 			type: TEXT;
 			mouse_events: 0;
+			scale: 1;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: -8 0;
 				rel2.relative: 8 1;
 				map {
@@ -123,7 +81,7 @@ group {
 				}
 				text {
 					text: "Output Channels";
-					size: 14;
+					size: 11;
 					align: 0.5 0.5;
 				}
 				color: 128 128 128 255;
@@ -142,6 +100,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.1 0.1;
 				rel2.relative: 0.9 0.9;
 				color: 128 128 128 255;
@@ -157,11 +116,13 @@ group {
 			name: "default";
 			type: TEXT;
 			mouse_events: 0;
+			scale: 1;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				text {
 					text: "00";
-					size: 11;
+					size: 10;
 					align: 0.5 0.5;
 				}
 				color: 48 48 48 255;
@@ -174,6 +135,7 @@ group {
 			mouse_events: 1;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				image {
 					normal: "border.png";
 					border: 2 2 2 2;
@@ -265,6 +227,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.5 0;
 				rel1.offset: -0.5 0;
 				rel2.relative: 0.5 1;
@@ -278,6 +241,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0 0.5;
 				rel1.offset: 0 -0.5;
 				rel2.relative: 1 0.5;
@@ -292,6 +256,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				color: 255 255 255 255;
 			}
 			description {
@@ -307,6 +272,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.25 0.25;
 				rel2.relative: 0.75 0.75;
 				color: 255 255 255 0;
@@ -324,6 +290,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.5 0.5;
 				rel2.relative: 0.5 0.5;
 				color: 255 0 0 255;
@@ -347,6 +314,7 @@ group {
 			mouse_events: 0;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				rel1.relative: 0.5 0.5;
 				rel2.relative: 0.5 0.5;
 				color: 255 0 0 255;
@@ -371,6 +339,7 @@ group {
 			mouse_events: 1;
 			description {
 				state: "default" 0.0;
+				fixed: 1 1;
 				image {
 					normal: "border.png";
 					border: 2 2 2 2;

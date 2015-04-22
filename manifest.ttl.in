@@ -1,20 +1,59 @@
+# Copyright (c) 2015 Hanspeter Portner (dev@open-music-kontrollers.ch)
+#
+# This is free software: you can redistribute it and/or modify
+# it under the terms of the Artistic License 2.0 as published by
+# The Perl Foundation.
+#
+# This source is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# Artistic License 2.0 for more details.
+#
+# You should have received a copy of the Artistic License 2.0
+# along the source as a COPYING file. If not, obtain it from
+# http://www.perlfoundation.org/artistic_license_2_0.
+
 @prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+@prefix kx:		<http://kxstudio.sf.net/ns/lv2ext/external-ui#> .
 
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter>
+@prefix midi_matrix:	<http://open-music-kontrollers.ch/lv2/midi_matrix#> .
+
+# to please sord_validate
+ui:EoUI
+	a rdfs:Class, owl:Class ;
+	rdfs:subClassOf ui:UI .
+kx:Widget
+	a rdfs:Class, owl:Class ;
+	rdfs:subClassOf ui:UI .
+kx:Host
+	a lv2:Feature .
+
+# Channel Filter Plugin
+midi_matrix:channel_filter
 	a lv2:Plugin ;
 	lv2:binary <midi_matrix@LIB_EXT@> ;
-	ui:ui <http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/ui> ;
-	ui:ui <http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/eo> ;
+	ui:ui midi_matrix:channel_filter_eo ;
+	ui:ui midi_matrix:channel_filter_ui ;
+	ui:ui midi_matrix:channel_filter_x11 ;
+	ui:ui midi_matrix:channel_filter_kx ;
 	rdfs:seeAlso <midi_matrix.ttl> .
 
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/ui>
+midi_matrix:channel_filter_eo
+	a ui:EoUI ;
+	ui:binary <midi_matrix_ui@LIB_EXT@> ;
+	rdfs:seeAlso <midi_matrix.ttl> .
+midi_matrix:channel_filter_ui
+	a ui:UI ;
+	ui:binary <midi_matrix_ui@LIB_EXT@> ;
+	rdfs:seeAlso <midi_matrix.ttl> .
+midi_matrix:channel_filter_x11
 	a ui:X11UI ;
 	ui:binary <midi_matrix_ui@LIB_EXT@> ;
 	rdfs:seeAlso <midi_matrix.ttl> .
-
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/eo>
-	a ui:EoUI ;
+midi_matrix:channel_filter_kx
+	a kx:Widget ;
 	ui:binary <midi_matrix_ui@LIB_EXT@> ;
 	rdfs:seeAlso <midi_matrix.ttl> .

@@ -1,42 +1,71 @@
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix doap: <http://usefulinc.com/ns/doap#> .
-@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
-@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
-@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
-@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+# Copyright (c) 2015 Hanspeter Portner (dev@open-music-kontrollers.ch)
+#
+# This is free software: you can redistribute it and/or modify
+# it under the terms of the Artistic License 2.0 as published by
+# The Perl Foundation.
+#
+# This source is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# Artistic License 2.0 for more details.
+#
+# You should have received a copy of the Artistic License 2.0
+# along the source as a COPYING file. If not, obtain it from
+# http://www.perlfoundation.org/artistic_license_2_0.
+
+@prefix owl:	<http://www.w3.org/2002/07/owl#> .
+@prefix foaf:	<http://xmlns.com/foaf/0.1/> .
+@prefix doap:	<http://usefulinc.com/ns/doap#> .
+@prefix lv2:	<http://lv2plug.in/ns/lv2core#> .
+@prefix ui:		<http://lv2plug.in/ns/extensions/ui#> .
+@prefix atom:	<http://lv2plug.in/ns/ext/atom#> .
 @prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+@prefix midi:	<http://lv2plug.in/ns/ext/midi#> .
+@prefix time: <http://lv2plug.in/ns/ext/time#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+@prefix kx:		<http://kxstudio.sf.net/ns/lv2ext/external-ui#> .
+
+@prefix lic:	<http://opensource.org/licenses/> .
+@prefix omk:	<http://open-music-kontrollers.ch/ventosus#> .
+@prefix proj:	<http://open-music-kontrollers.ch/lv2/> .
+@prefix midi_matrix:	<http://open-music-kontrollers.ch/lv2/midi_matrix#> .
 
 # Maintainer
-<http://open-music-kontrollers.ch/ventosus#me>
+omk:me
 	a foaf:Person ;
 	foaf:name "Hanspeter Portner" ;
 	foaf:mbox <dev@open-music-kontrollers.ch> ;
 	foaf:homepage <http://open-music-kontrollers.ch> .
 
 # Project
-<http://open-music-kontrollers.ch/lv2/midi_matrix>
+proj:midi_matrix
 	a doap:Project ;
-	doap:maintainer <http://open-music-kontrollers.ch/ventosus#me> ;
-	doap:name "Various MIDI Matrix Multiplexers and Demultiplexers" .
+	doap:maintainer omk:me ;
+	doap:name "Sherlock Bundle" .
 
-# Plugin UI
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/ui>
+# Channel Filter UI
+midi_matrix:channel_filter_eo
+	a ui:EoUI .
+midi_matrix:channel_filter_ui
+	a ui:UI ;
+	lv2:requiredFeature ui:idleInterface ;
+  lv2:extensionData ui:idleInterface, ui:showInterface .
+midi_matrix:channel_filter_x11
 	a ui:X11UI ;
 	lv2:requiredFeature ui:idleInterface ;
-  lv2:optionalFeature ui:noUserResize ;
-  lv2:extensionData ui:idleInterface, ui:showInterface .
+	lv2:optionalFeature ui:resize ;
+  lv2:extensionData ui:idleInterface .
+midi_matrix:channel_filter_kx
+	a kx:Widget ;
+	lv2:requiredFeature kx:Host .
 
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter/eo>
-	a ui:EoUI .
-
-# Plugin
-<http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter>
+# Channel Filter Plugin
+midi_matrix:channel_filter
 	a lv2:Plugin,
 		lv2:MixerPlugin;
 	doap:name "MIDI Channel Matrix Multiplexer and Demultiplexer" ;
-	doap:license <http://opensource.org/licenses/isc> ;
-	lv2:project <http://open-music-kontrollers.ch/lv2/midi_matrix> ;
+	doap:license lic:Artistic-2.0 ;
+	lv2:project proj:midi_matrix ;
 	lv2:optionalFeature lv2:isLive, lv2:hardRTCapable ;
 	lv2:requiredFeature urid:map ;
 
@@ -50,9 +79,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 1 ;
@@ -62,9 +89,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 2 ;
@@ -74,9 +99,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 3 ;
@@ -86,9 +109,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 4 ;
@@ -98,9 +119,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 5 ;
@@ -110,9 +129,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 6 ;
@@ -122,9 +139,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 7 ;
@@ -134,9 +149,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 8 ;
@@ -146,9 +159,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 9 ;
@@ -158,9 +169,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 10 ;
@@ -170,9 +179,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 11 ;
@@ -182,9 +189,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 12 ;
@@ -194,9 +199,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 13 ;
@@ -206,9 +209,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 14 ;
@@ -218,9 +219,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
 		lv2:index 15 ;
@@ -230,9 +229,7 @@
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
 		lv2:portProperty lv2:integer ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:InputPort ,
 			atom:AtomPort ;
 		atom:bufferType atom:Sequence ;
@@ -240,9 +237,7 @@
 		lv2:index 16 ;
 		lv2:symbol "midi_in" ;
 		lv2:name "MIDI Input Port" ;
-	] ;
-
-	lv2:port [
+	] , [
 	  a lv2:OutputPort ,
 			atom:AtomPort ;
 		atom:bufferType atom:Sequence ;

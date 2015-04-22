@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(midi_matrix.lv2)
 
 include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/eo_ui.lv2)
 
 set(DEST lib/lv2/midi_matrix.lv2)
 set(LIB_EXT ".so")
@@ -13,25 +14,9 @@ pkg_search_module(LV2 REQUIRED lv2>=1.10.0)
 include_directories(${LV2_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${LV2_LDFLAGS})
 
-pkg_search_module(EINA REQUIRED eina>=1.8)
-include_directories(${EINA_INCLUDE_DIRS})
-set(LIBS_UI ${LIBS_UI} ${EINA_LDFLAGS})
-
-pkg_search_module(ECORE REQUIRED ecore>=1.8)
-include_directories(${ECORE_INCLUDE_DIRS})
-set(LIBS_UI ${LIBS_UI} ${ECORE_LDFLAGS})
-
-pkg_search_module(EVAS REQUIRED evas>=1.8)
-include_directories(${EVAS_INCLUDE_DIRS})
-set(LIBS_UI ${LIBS_UI} ${EVAS_LDFLAGS})
-
-pkg_search_module(ECORE_EVAS REQUIRED ecore-evas>=1.8)
-include_directories(${ECORE_EVAS_INCLUDE_DIRS})
-set(LIBS_UI ${LIBS_UI} ${ECORE_EVAS_LDFLAGS})
-
-pkg_search_module(EDJE REQUIRED edje>=1.8)
-include_directories(${EDJE_INCLUDE_DIRS})
-set(LIBS_UI ${LIBS_UI} ${EDJE_LDFLAGS})
+pkg_search_module(ELM REQUIRED elementary>=1.8)
+include_directories(${ELM_INCLUDE_DIRS})
+set(LIBS_UI ${LIBS_UI} ${ELM_LDFLAGS})
 
 add_library(midi_matrix MODULE
 	midi_matrix.c
