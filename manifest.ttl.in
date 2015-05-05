@@ -35,10 +35,10 @@ kx:Host
 midi_matrix:channel_filter
 	a lv2:Plugin ;
 	lv2:binary <midi_matrix@LIB_EXT@> ;
-	ui:ui midi_matrix:channel_filter_eo ;
-	ui:ui midi_matrix:channel_filter_ui ;
-	ui:ui midi_matrix:channel_filter_x11 ;
-	ui:ui midi_matrix:channel_filter_kx ;
+	@EO_UI_WRAP@ui:ui midi_matrix:channel_filter_eo ;
+	@UI_UI_WRAP@ui:ui midi_matrix:channel_filter_ui ;
+	@KX_UI_WRAP@ui:ui midi_matrix:channel_filter_kx ;
+	@X11_UI_WRAP@ui:ui midi_matrix:channel_filter_x11 ;
 	rdfs:seeAlso <midi_matrix.ttl> .
 
 midi_matrix:channel_filter_eo

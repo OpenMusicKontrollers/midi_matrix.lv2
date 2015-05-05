@@ -18,6 +18,17 @@ pkg_search_module(ELM REQUIRED elementary>=1.8)
 include_directories(${ELM_INCLUDE_DIRS})
 set(LIBS_UI ${LIBS_UI} ${ELM_LDFLAGS})
 
+if((${ELM_VERSION} VERSION_EQUAL "1.13.0") OR (${ELM_VERSION} VERSION_GREATER "1.13.0"))
+	add_definitions("-DELM_HAS_FAKE")
+endif()
+
+option(BUILD_X11_WRAPPER ON)
+if(${BUILD_X11_WRAPPER})
+	set(X11_UI_WRAP "")
+else()
+	set(X11_UI_WRAP "#")
+endif()
+
 add_library(midi_matrix MODULE
 	midi_matrix.c
 	midi_matrix_channel_filter.c)
