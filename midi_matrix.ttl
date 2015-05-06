@@ -237,6 +237,7 @@ midi_matrix:channel_filter
 		lv2:index 16 ;
 		lv2:symbol "midi_in" ;
 		lv2:name "MIDI Input Port" ;
+		lv2:designation lv2:control ;
 	] , [
 	  a lv2:OutputPort ,
 			atom:AtomPort ;
@@ -245,4 +246,5 @@ midi_matrix:channel_filter
 		lv2:index 17 ;
 		lv2:symbol "midi_out" ;
 		lv2:name "MIDI Output Port" ;
+		lv2:designation lv2:control ;
 	] .
