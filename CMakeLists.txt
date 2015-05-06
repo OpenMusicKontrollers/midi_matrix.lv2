@@ -6,7 +6,13 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/eo_ui.lv2)
 
 set(DEST lib/lv2/midi_matrix.lv2)
-set(LIB_EXT ".so")
+if(WIN32)
+	set(LIB_EXT ".dll")
+elseif(APPLE)
+	set(LIB_EXT ".so")
+else()
+	set(LIB_EXT ".so")
+endif()
 
 find_package(PkgConfig) # ${PKG_CONFIG_FOUND}
 
@@ -22,7 +28,7 @@ if((${ELM_VERSION} VERSION_EQUAL "1.13.0") OR (${ELM_VERSION} VERSION_GREATER "1
 	add_definitions("-DELM_HAS_FAKE")
 endif()
 
-option(BUILD_X11_WRAPPER ON)
+option(BUILD_X11_WRAPPER "Build X11 UI wrapper" ON)
 if(${BUILD_X11_WRAPPER})
 	set(X11_UI_WRAP "")
 else()
