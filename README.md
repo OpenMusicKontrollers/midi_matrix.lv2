@@ -37,7 +37,7 @@ _Through: Connection 03-03 highlighted_
 	cd midi_matrix.lv2
 	mkdir build
 	cd build
-	cmake -DCMAKE_C_FLAGS="-std=gnu99" ..
+	cmake -DCMAKE_C_FLAGS="-std=gnu11" ..
 	make
 	sudo make install
 
