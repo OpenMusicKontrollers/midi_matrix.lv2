@@ -18,7 +18,7 @@ options=()
 install=
 source=("https://github.com/OpenMusicKontrollers/$_pkgname/archive/$pkgver.tar.gz")
 noextract=()
-md5sums=('8610f1d87a1d5d51d5fe94251e967928')
+md5sums=('85c4570e48255688326a29cab46391b5')
 
 prepare() {
   cd "$srcdir/$_pkgname-$pkgver"
