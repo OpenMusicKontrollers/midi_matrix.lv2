@@ -391,7 +391,7 @@ _content_get(eo_ui_t *eoui)
 		label = elm_layout_add(ui->grid);
 		elm_layout_file_set(label, ui->theme_path,
 			MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label");
-		elm_object_part_text_set(label, "default", str);
+		elm_layout_text_set(label, "elm.text", str);
 		elm_layout_signal_callback_add(label, "in",
 			MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _horizontal_in, ui);
 		elm_layout_signal_callback_add(label, "out",
@@ -408,7 +408,7 @@ _content_get(eo_ui_t *eoui)
 		label = elm_layout_add(ui->grid);
 		elm_layout_file_set(label, ui->theme_path,
 			MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label");
-		elm_object_part_text_set(label, "default", str);
+		elm_layout_text_set(label, "elm.text", str);
 		elm_layout_signal_callback_add(label, "in",
 			MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _vertical_in, ui);
 		elm_layout_signal_callback_add(label, "out",
@@ -425,7 +425,7 @@ _content_get(eo_ui_t *eoui)
 	Evas_Object *def = elm_layout_add(ui->grid);
 	elm_layout_file_set(def, ui->theme_path,
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label");
-	elm_object_part_text_set(def, "default", "D");
+	elm_layout_text_set(def, "elm.text", "D");
 	elm_layout_signal_callback_add(def, "in",
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _DAC_in, ui);
 	elm_layout_signal_callback_add(def, "out",
@@ -440,7 +440,7 @@ _content_get(eo_ui_t *eoui)
 	Evas_Object *all = elm_layout_add(ui->grid);
 	elm_layout_file_set(all, ui->theme_path,
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label");
-	elm_object_part_text_set(all, "default", "A");
+	elm_layout_text_set(all, "elm.text", "A");
 	elm_layout_signal_callback_add(all, "in",
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _DAC_in, ui);
 	elm_layout_signal_callback_add(all, "out",
@@ -455,7 +455,7 @@ _content_get(eo_ui_t *eoui)
 	Evas_Object *clear = elm_layout_add(ui->grid);
 	elm_layout_file_set(clear, ui->theme_path,
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label");
-	elm_object_part_text_set(clear, "default", "C");
+	elm_layout_text_set(clear, "elm.text", "C");
 	elm_layout_signal_callback_add(clear, "in",
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI, _DAC_in, ui);
 	elm_layout_signal_callback_add(clear, "out",
@@ -470,7 +470,7 @@ _content_get(eo_ui_t *eoui)
 	Evas_Object *input_label = elm_layout_add(ui->grid);
 	elm_layout_file_set(input_label, ui->theme_path,
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label/inputs");
-	elm_object_part_text_set(input_label, "default", "Input Channels");
+	elm_layout_text_set(input_label, "elm.text", "Input Channels");
 	evas_object_size_hint_weight_set(input_label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(input_label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(input_label);
@@ -479,7 +479,7 @@ _content_get(eo_ui_t *eoui)
 	Evas_Object *output_label = elm_layout_add(ui->grid);
 	elm_layout_file_set(output_label, ui->theme_path,
 		MIDI_MATRIX_CHANNEL_FILTER_UI_URI"/label/outputs");
-	elm_object_part_text_set(output_label, "default", "Output Channels");
+	elm_layout_text_set(output_label, "elm.text", "Output Channels");
 	evas_object_size_hint_weight_set(output_label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(output_label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(output_label);

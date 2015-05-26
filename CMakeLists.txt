@@ -5,6 +5,8 @@ project(midi_matrix.lv2)
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/eo_ui.lv2)
 
+set(CMAKE_C_FLAGS "-std=gnu99 ${CMAKE_C_FLAGS}")
+
 set(DEST lib/lv2/midi_matrix.lv2)
 if(WIN32)
 	set(LIB_EXT ".dll")
@@ -24,12 +26,14 @@ pkg_search_module(ELM REQUIRED elementary>=1.8)
 include_directories(${ELM_INCLUDE_DIRS})
 set(LIBS_UI ${LIBS_UI} ${ELM_LDFLAGS})
 
-pkg_search_module(ECORE_X OPTIONAl ecore-x)
+pkg_search_module(ECORE_X OPTIONAL ecore-x)
 
-if(${ECORE_X_FOUND} AND ((${ELM_VERSION} VERSION_EQUAL "1.13.0") OR (${ELM_VERSION} VERSION_GREATER "1.13.0")))
+if((DEFINED ECORE_X_FOUND) AND ((${ELM_VERSION} VERSION_EQUAL "1.13.0") OR (${ELM_VERSION} VERSION_GREATER "1.13.0")))
+	message(STATUS "X11 UI wrap enabled")
 	set(X11_UI_WRAP "")
 	add_definitions("-DX11_UI_WRAP")
 else()
+	message(STATUS "X11 UI wrap disabled")
 	set(X11_UI_WRAP "#")
 endif()
 
