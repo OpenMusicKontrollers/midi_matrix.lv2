@@ -562,17 +562,6 @@ port_event(LV2UI_Handle handle, uint32_t i, uint32_t buffer_size, uint32_t forma
 	}
 }
 
-static const void *
-extension_data(const char *uri)
-{
-	if(!strcmp(uri, LV2_UI__idleInterface))
-		return &idle_ext;
-	else if(!strcmp(uri, LV2_UI__showInterface))
-		return &show_ext;
-		
-	return NULL;
-}
-
 const LV2UI_Descriptor channel_filter_eo = {
 	.URI						= MIDI_MATRIX_CHANNEL_FILTER_EO_URI,
 	.instantiate		= instantiate,
