@@ -41,11 +41,13 @@ omk:me
 proj:midi_matrix
 	a doap:Project ;
 	doap:maintainer omk:me ;
-	doap:name "Sherlock Bundle" .
+	doap:name "MIDI Matrix Bundle" .
 
 # Channel Filter UI
 midi_matrix:channel_filter_eo
-	a ui:EoUI .
+	a ui:EoUI ;
+	lv2:extensionData ui:resize ;
+	lv2:optionalFeature ui:resize .
 midi_matrix:channel_filter_ui
 	a ui:UI ;
 	lv2:requiredFeature ui:idleInterface ;
@@ -54,7 +56,7 @@ midi_matrix:channel_filter_x11
 	a ui:X11UI ;
 	lv2:requiredFeature ui:idleInterface ;
 	lv2:optionalFeature ui:resize ;
-  lv2:extensionData ui:idleInterface .
+  lv2:extensionData ui:idleInterface, ui:resize .
 midi_matrix:channel_filter_kx
 	a kx:Widget ;
 	lv2:requiredFeature kx:Host .
