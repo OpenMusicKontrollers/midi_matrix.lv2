@@ -37,6 +37,9 @@ omk:me
 	foaf:mbox <mailto:dev@open-music-kontrollers.ch> ;
 	foaf:homepage <http://open-music-kontrollers.ch> .
 
+lv2:isBitmask
+	a lv2:PortProperty .
+
 # Project
 proj:midi_matrix
 	a doap:Project ;
@@ -80,7 +83,7 @@ midi_matrix:channel_filter
 		lv2:default 1.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -90,7 +93,7 @@ midi_matrix:channel_filter
 		lv2:default 2.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -100,7 +103,7 @@ midi_matrix:channel_filter
 		lv2:default 4.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -110,7 +113,7 @@ midi_matrix:channel_filter
 		lv2:default 8.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -120,7 +123,7 @@ midi_matrix:channel_filter
 		lv2:default 16.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -130,7 +133,7 @@ midi_matrix:channel_filter
 		lv2:default 32.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -140,7 +143,7 @@ midi_matrix:channel_filter
 		lv2:default 64.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -150,7 +153,7 @@ midi_matrix:channel_filter
 		lv2:default 128.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -160,7 +163,7 @@ midi_matrix:channel_filter
 		lv2:default 256.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -170,7 +173,7 @@ midi_matrix:channel_filter
 		lv2:default 512.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -180,7 +183,7 @@ midi_matrix:channel_filter
 		lv2:default 1024.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -190,7 +193,7 @@ midi_matrix:channel_filter
 		lv2:default 2048.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -200,7 +203,7 @@ midi_matrix:channel_filter
 		lv2:default 4096.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -210,7 +213,7 @@ midi_matrix:channel_filter
 		lv2:default 8192.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -220,7 +223,7 @@ midi_matrix:channel_filter
 		lv2:default 16384.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			lv2:ControlPort ;
@@ -230,7 +233,7 @@ midi_matrix:channel_filter
 		lv2:default 32768.0 ;
 		lv2:minimum 0.0 ;
 		lv2:maximum 65535.0 ;
-		lv2:portProperty lv2:integer ;
+		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
 			atom:AtomPort ;
