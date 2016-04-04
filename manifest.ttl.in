@@ -36,26 +36,21 @@ midi_matrix:channel_filter
 	a lv2:Plugin ;
 	lv2:minorVersion @MIDI_MATRIX_MINOR_VERSION@ ;
 	lv2:microVersion @MIDI_MATRIX_MICRO_VERSION@ ;
-	lv2:binary <midi_matrix@LIB_EXT@> ;
-	@EO_UI_WRAP@ui:ui midi_matrix:channel_filter_eo ;
-	@UI_UI_WRAP@ui:ui midi_matrix:channel_filter_ui ;
-	@KX_UI_WRAP@ui:ui midi_matrix:channel_filter_kx ;
-	@X11_UI_WRAP@ui:ui midi_matrix:channel_filter_x11 ;
+	lv2:binary <midi_matrix@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	ui:ui midi_matrix:channel_filter_1_ui ;
+	ui:ui midi_matrix:channel_filter_2_kx ;
+	ui:ui midi_matrix:channel_filter_3_eo ;
 	rdfs:seeAlso <midi_matrix.ttl> .
 
-midi_matrix:channel_filter_eo
-	a ui:EoUI ;
-	ui:binary <midi_matrix_ui@LIB_EXT@> ;
-	rdfs:seeAlso <midi_matrix.ttl> .
-midi_matrix:channel_filter_ui
+midi_matrix:channel_filter_1_ui
 	a ui:UI ;
-	ui:binary <midi_matrix_ui@LIB_EXT@> ;
-	rdfs:seeAlso <midi_matrix.ttl> .
-midi_matrix:channel_filter_x11
-	a ui:X11UI ;
-	ui:binary <midi_matrix_ui@LIB_EXT@> ;
-	rdfs:seeAlso <midi_matrix.ttl> .
-midi_matrix:channel_filter_kx
+	ui:binary <midi_matrix_ui@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	rdfs:seeAlso <midi_matrix_ui.ttl> .
+midi_matrix:channel_filter_2_kx
 	a kx:Widget ;
-	ui:binary <midi_matrix_ui@LIB_EXT@> ;
-	rdfs:seeAlso <midi_matrix.ttl> .
+	ui:binary <midi_matrix_ui@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	rdfs:seeAlso <midi_matrix_ui.ttl> .
+midi_matrix:channel_filter_3_eo
+	a ui:EoUI ;
+	ui:binary <midi_matrix_eo@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	rdfs:seeAlso <midi_matrix_ui.ttl> .

@@ -17,7 +17,7 @@
 
 #include <midi_matrix.h>
 
-#include <lv2_eo_ui.h>
+#include <Elementary.h>
 
 #define BORDER_SIZE 12
 #define TILE_SIZE 20
@@ -25,13 +25,13 @@
 typedef struct _UI UI;
 
 struct _UI {
-	eo_ui_t eoui;
-
 	LV2UI_Write_Function write_function;
 	LV2UI_Controller controller;
 
 	char theme_path [1024];
+	LV2_URID ui_float_protocol;
 
+	Evas_Object *widget;
 	Evas_Object *grid;
 	Evas_Object *tiles [0x11][0x11];
 	
@@ -109,7 +109,7 @@ _tile_changed(void *data, Evas_Object *edj, const char *emission, const char *so
 		*src = _tile_refresh(ui, i, *src, *src | mask);
 
 	float control = *src;
-	ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+	ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 }
 
 // Input Channel Callbacks
@@ -189,7 +189,7 @@ _horizontal_changed(void *data, Evas_Object *edj, const char *emission, const ch
 	*src = _tile_refresh(ui, i, *src, *src ? 0x0000 : 0xffff);
 
 	float control = *src;
-	ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+	ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 	
 	_horizontal_in(data, edj, emission, source);
 }
@@ -287,7 +287,7 @@ _vertical_changed(void *data, Evas_Object *edj, const char *emission, const char
 		*src = _tile_refresh(ui, c, *src, clear ? *src & ~mask : *src | mask);
 
 		float control = *src;
-		ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+		ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 	}
 
 	_vertical_in(data, edj, emission, source);
@@ -318,7 +318,7 @@ _def_changed(void *data, Evas_Object *edj, const char *emission, const char *sou
 		uint16_t dst = 1 << i;
 		*src = _tile_refresh(ui, i, *src, dst);
 		float control = *src;
-		ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+		ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 	}
 }
 
@@ -334,7 +334,7 @@ _all_changed(void *data, Evas_Object *edj, const char *emission, const char *sou
 		uint16_t dst = 0xffff;
 		*src = _tile_refresh(ui, i, *src, dst);
 		float control = *src;
-		ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+		ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 	}
 }
 
@@ -350,19 +350,36 @@ _clear_changed(void *data, Evas_Object *edj, const char *emission, const char *s
 		uint16_t dst = 0x0;
 		*src = _tile_refresh(ui, i, *src, dst);
 		float control = *src;
-		ui->write_function(ui->controller, i, sizeof(float), 0, &control);
+		ui->write_function(ui->controller, i, sizeof(float), ui->ui_float_protocol, &control);
 	}
 }
 
-static Evas_Object *
-_content_get(eo_ui_t *eoui)
+static void
+_content_free(void *data, Evas *e, Evas_Object *obj, void *event_info)
 {
-	UI *ui = (void *)eoui - offsetof(UI, eoui);
+	UI *ui = data;
 
-	ui->grid = elm_table_add(eoui->win);
+	ui->widget = NULL;
+}
+
+static void
+_content_del(void *data, Evas *e, Evas_Object *obj, void *event_info)
+{
+	UI *ui = data;
+
+	evas_object_del(ui->widget);
+}
+
+static Evas_Object *
+_content_get(UI *ui, Evas_Object *parent)
+{
+	ui->grid = elm_table_add(parent);
 	elm_table_homogeneous_set(ui->grid, EINA_TRUE);
 	elm_table_padding_set(ui->grid, 0, 0);
+	evas_object_size_hint_min_set(ui->grid, 400, 400);
 	evas_object_size_hint_aspect_set(ui->grid, EVAS_ASPECT_CONTROL_BOTH, 1, 1);
+	evas_object_event_callback_add(ui->grid, EVAS_CALLBACK_FREE, _content_free, ui);
+	evas_object_event_callback_add(ui->grid, EVAS_CALLBACK_DEL, _content_del, ui);
 
 	for(int i=0; i<0x10; i++)
 	{
@@ -494,45 +511,39 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri, const ch
 	if(strcmp(plugin_uri, MIDI_MATRIX_CHANNEL_FILTER_URI))
 		return NULL;
 
-	eo_ui_driver_t driver;
-	if(descriptor == &channel_filter_eo)
-		driver = EO_UI_DRIVER_EO;
-	else if(descriptor == &channel_filter_ui)
-		driver = EO_UI_DRIVER_UI;
-	else if(descriptor == &channel_filter_x11)
-		driver = EO_UI_DRIVER_X11;
-	else if(descriptor == &channel_filter_kx)
-		driver = EO_UI_DRIVER_KX;
-	else
-		return NULL;
-
 	UI *ui = calloc(1, sizeof(UI));
 	if(!ui)
 		return NULL;
 
-	eo_ui_t *eoui = &ui->eoui;
-	eoui->driver = driver;
-	eoui->content_get = _content_get;
-	eoui->w = 400,
-	eoui->h = 400;
-
 	ui->write_function = write_function;
 	ui->controller = controller;
 
-	int i, j;
-	for(i=0; features[i]; i++)
+	LV2_URID_Map *map = NULL;
+	Evas_Object *parent = NULL;
+	for(int i=0; features[i]; i++)
 	{
-		// nothing
+		if(!strcmp(features[i]->URI, LV2_URID__map))
+			map = features[i]->data;
+		else if(!strcmp(features[i]->URI, LV2_UI__parent))
+			parent = features[i]->data;
   }
-	
-	sprintf(ui->theme_path, "%s/midi_matrix.edj", bundle_path);
-
-	if(eoui_instantiate(eoui, descriptor, plugin_uri, bundle_path, write_function,
-		controller, widget, features))
+	if(!map || !parent)
 	{
 		free(ui);
 		return NULL;
 	}
+
+	ui->ui_float_protocol = map->map(map->handle, LV2_UI_PREFIX"floatProtocol");
+	
+	sprintf(ui->theme_path, "%smidi_matrix.edj", bundle_path);
+
+	ui->widget = _content_get(ui, parent);
+	if(!ui->widget)
+	{
+		free(ui);
+		return NULL;
+	}
+	*(Evas_Object **)widget = ui->widget;
 	
 	return ui;
 }
@@ -541,24 +552,29 @@ static void
 cleanup(LV2UI_Handle handle)
 {
 	UI *ui = handle;
-	
-	eoui_cleanup(&ui->eoui);
+
+	if(ui->widget)
+		evas_object_del(ui->widget);
 	
 	if(ui)
 		free(ui);
 }
 
 static void
-port_event(LV2UI_Handle handle, uint32_t i, uint32_t buffer_size, uint32_t format, const void *buffer)
+port_event(LV2UI_Handle handle, uint32_t index, uint32_t size, uint32_t protocol,
+	const void *buf)
 {
 	UI *ui = handle;
 
-	if(i < 0x10)
+	if( (protocol == 0) || (protocol == ui->ui_float_protocol) )
 	{
-		uint16_t *src = &ui->mask[i];
-		uint16_t dst = (uint16_t)*(const float *)buffer;
+		if(index < 0x10)
+		{
+			uint16_t *src = &ui->mask[index];
+			uint16_t dst = (uint16_t)*(const float *)buf;
 
-		*src = _tile_refresh(ui, i, *src, dst);
+			*src = _tile_refresh(ui, index, *src, dst);
+		}
 	}
 }
 
@@ -567,29 +583,5 @@ const LV2UI_Descriptor channel_filter_eo = {
 	.instantiate		= instantiate,
 	.cleanup				= cleanup,
 	.port_event			= port_event,
-	.extension_data	= eoui_eo_extension_data
-};
-
-const LV2UI_Descriptor channel_filter_ui = {
-	.URI						= MIDI_MATRIX_CHANNEL_FILTER_UI_URI,
-	.instantiate		= instantiate,
-	.cleanup				= cleanup,
-	.port_event			= port_event,
-	.extension_data	= eoui_ui_extension_data
-};
-
-const LV2UI_Descriptor channel_filter_x11 = {
-	.URI						= MIDI_MATRIX_CHANNEL_FILTER_X11_URI,
-	.instantiate		= instantiate,
-	.cleanup				= cleanup,
-	.port_event			= port_event,
-	.extension_data	= eoui_x11_extension_data
-};
-
-const LV2UI_Descriptor channel_filter_kx = {
-	.URI						= MIDI_MATRIX_CHANNEL_FILTER_KX_URI,
-	.instantiate		= instantiate,
-	.cleanup				= cleanup,
-	.port_event			= port_event,
-	.extension_data	= eoui_kx_extension_data
+	.extension_data	= NULL
 };

@@ -34,16 +34,14 @@
 
 #define MIDI_MATRIX_CHANNEL_FILTER_URI			MIDI_MATRIX_URI"#channel_filter"
 
-#define MIDI_MATRIX_CHANNEL_FILTER_EO_URI		MIDI_MATRIX_URI"#channel_filter_eo"
-#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_URI"#channel_filter_ui"
-#define MIDI_MATRIX_CHANNEL_FILTER_X11_URI	MIDI_MATRIX_URI"#channel_filter_x11"
-#define MIDI_MATRIX_CHANNEL_FILTER_KX_URI		MIDI_MATRIX_URI"#channel_filter_kx"
+#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_URI"#channel_filter_1_ui"
+#define MIDI_MATRIX_CHANNEL_FILTER_KX_URI		MIDI_MATRIX_URI"#channel_filter_2_kx"
+#define MIDI_MATRIX_CHANNEL_FILTER_EO_URI		MIDI_MATRIX_URI"#channel_filter_3_eo"
 
 const LV2_Descriptor channel_filter;
 
-const LV2UI_Descriptor channel_filter_eo;
 const LV2UI_Descriptor channel_filter_ui;
-const LV2UI_Descriptor channel_filter_x11;
 const LV2UI_Descriptor channel_filter_kx;
+const LV2UI_Descriptor channel_filter_eo;
 
 #endif // _MIDI_MATRIX_LV2_H

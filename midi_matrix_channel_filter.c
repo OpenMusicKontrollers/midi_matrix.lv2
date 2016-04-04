@@ -121,7 +121,6 @@ run(LV2_Handle instance, uint32_t sample_count)
 	lv2_atom_forge_sequence_head(forge, &handle->frame, 0);
 
 	// process incoming events
-	LV2_Atom_Event *ev = NULL;
 	LV2_ATOM_SEQUENCE_FOREACH(handle->midi_in, ev)
 	{
 		if(ev->body.type == handle->uris.midi_MidiEvent)

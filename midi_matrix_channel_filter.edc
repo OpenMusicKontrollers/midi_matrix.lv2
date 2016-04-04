@@ -16,7 +16,7 @@
  */
 
 #define MIDI_MATRIX_CHANNEL_FILTER_URI			MIDI_MATRIX_URI"#channel_filter"
-#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_URI"#channel_filter_ui"
+#define MIDI_MATRIX_CHANNEL_FILTER_UI_URI		MIDI_MATRIX_URI"#channel_filter_1_ui"
 
 images {
 	image: "border.png" COMP;

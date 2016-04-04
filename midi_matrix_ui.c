@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Hanspeter Portner (dev@open-music-kontrollers.ch)
+ * Copyright (c) 2015-2016 Hanspeter Portner (dev@open-music-kontrollers.ch)
  *
  * This is free software: you can redistribute it and/or modify
  * it under the terms of the Artistic License 2.0 as published by
@@ -16,20 +16,39 @@
  */
 
 #include <midi_matrix.h>
+#include <sandbox_ui.h>
 
-LV2_SYMBOL_EXPORT const LV2UI_Descriptor*
+const LV2UI_Descriptor channel_filter_ui= {
+	.URI						= MIDI_MATRIX_CHANNEL_FILTER_UI_URI,
+	.instantiate		= sandbox_ui_instantiate,
+	.cleanup				= sandbox_ui_cleanup,
+	.port_event			= sandbox_ui_port_event,
+	.extension_data	= sandbox_ui_extension_data
+};
+
+const LV2UI_Descriptor channel_filter_kx= {
+	.URI						= MIDI_MATRIX_CHANNEL_FILTER_KX_URI,
+	.instantiate		= sandbox_ui_instantiate,
+	.cleanup				= sandbox_ui_cleanup,
+	.port_event			= sandbox_ui_port_event,
+	.extension_data	= NULL
+};
+
+#ifdef _WIN32
+__declspec(dllexport)
+#else
+__attribute__((visibility("default")))
+#endif
+const LV2UI_Descriptor*
 lv2ui_descriptor(uint32_t index)
 {
 	switch(index)
 	{
 		case 0:
-			return &channel_filter_eo;
-		case 1:
 			return &channel_filter_ui;
-		case 2:
-			return &channel_filter_x11;
-		case 3:
+		case 1:
 			return &channel_filter_kx;
+
 		default:
 			return NULL;
 	}
