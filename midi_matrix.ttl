@@ -77,9 +77,9 @@ midi_matrix:channel_filter
 		lv2:index 0 ;
 		lv2:symbol "mask_channel_1" ;
 		lv2:name "Mask of Channel 1" ;
-		lv2:default 1.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 1 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -87,9 +87,9 @@ midi_matrix:channel_filter
 		lv2:index 1 ;
 		lv2:symbol "mask_channel_2" ;
 		lv2:name "Mask of Channel 2" ;
-		lv2:default 2.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 2 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -97,9 +97,9 @@ midi_matrix:channel_filter
 		lv2:index 2 ;
 		lv2:symbol "mask_channel_3" ;
 		lv2:name "Mask of Channel 3" ;
-		lv2:default 4.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 4 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -107,9 +107,9 @@ midi_matrix:channel_filter
 		lv2:index 3 ;
 		lv2:symbol "mask_channel_4" ;
 		lv2:name "Mask of Channel 4" ;
-		lv2:default 8.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 8 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -117,9 +117,9 @@ midi_matrix:channel_filter
 		lv2:index 4 ;
 		lv2:symbol "mask_channel_5" ;
 		lv2:name "Mask of Channel 5" ;
-		lv2:default 16.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 16 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -127,9 +127,9 @@ midi_matrix:channel_filter
 		lv2:index 5 ;
 		lv2:symbol "mask_channel_6" ;
 		lv2:name "Mask of Channel 6" ;
-		lv2:default 32.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 32 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -137,9 +137,9 @@ midi_matrix:channel_filter
 		lv2:index 6 ;
 		lv2:symbol "mask_channel_7" ;
 		lv2:name "Mask of Channel 7" ;
-		lv2:default 64.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 64 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -147,9 +147,9 @@ midi_matrix:channel_filter
 		lv2:index 7 ;
 		lv2:symbol "mask_channel_8" ;
 		lv2:name "Mask of Channel 8" ;
-		lv2:default 128.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 128 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -157,9 +157,9 @@ midi_matrix:channel_filter
 		lv2:index 8 ;
 		lv2:symbol "mask_channel_9" ;
 		lv2:name "Mask of Channel 9" ;
-		lv2:default 256.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 256 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -167,9 +167,9 @@ midi_matrix:channel_filter
 		lv2:index 9 ;
 		lv2:symbol "mask_channel_10" ;
 		lv2:name "Mask of Channel 10" ;
-		lv2:default 512.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 512 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -177,9 +177,9 @@ midi_matrix:channel_filter
 		lv2:index 10 ;
 		lv2:symbol "mask_channel_11" ;
 		lv2:name "Mask of Channel 11" ;
-		lv2:default 1024.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 1024 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -187,9 +187,9 @@ midi_matrix:channel_filter
 		lv2:index 11 ;
 		lv2:symbol "mask_channel_12" ;
 		lv2:name "Mask of Channel 12" ;
-		lv2:default 2048.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 2048 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -197,9 +197,9 @@ midi_matrix:channel_filter
 		lv2:index 12 ;
 		lv2:symbol "mask_channel_13" ;
 		lv2:name "Mask of Channel 13" ;
-		lv2:default 4096.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 4096 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -207,9 +207,9 @@ midi_matrix:channel_filter
 		lv2:index 13 ;
 		lv2:symbol "mask_channel_14" ;
 		lv2:name "Mask of Channel 14" ;
-		lv2:default 8192.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 8192 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -217,9 +217,9 @@ midi_matrix:channel_filter
 		lv2:index 14 ;
 		lv2:symbol "mask_channel_15" ;
 		lv2:name "Mask of Channel 15" ;
-		lv2:default 16384.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 16384 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
@@ -227,9 +227,9 @@ midi_matrix:channel_filter
 		lv2:index 15 ;
 		lv2:symbol "mask_channel_16" ;
 		lv2:name "Mask of Channel 16" ;
-		lv2:default 32768.0 ;
-		lv2:minimum 0.0 ;
-		lv2:maximum 65535.0 ;
+		lv2:default 32768 ;
+		lv2:minimum 0 ;
+		lv2:maximum 65535 ;
 		lv2:portProperty lv2:integer, lv2:isBitmask ;
 	] , [
 	  a lv2:InputPort ,
