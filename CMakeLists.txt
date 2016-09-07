@@ -31,7 +31,7 @@ include_directories(${LV2_INCLUDE_DIRS})
 pkg_search_module(ELM REQUIRED elementary>=1.8)
 include_directories(${ELM_INCLUDE_DIRS})
 
-pkg_search_module(NANOMSG REQUIRED libnanomsg>=2.0)
+pkg_search_module(NANOMSG REQUIRED libnanomsg>=1.0 nanomsg>=1.0)
 include_directories(${NANOMSG_INCLUDE_DIRS})
 
 pkg_search_module(SRATOM REQUIRED sratom-0>=0.4.0)
