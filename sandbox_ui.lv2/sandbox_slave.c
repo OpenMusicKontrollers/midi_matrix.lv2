@@ -51,6 +51,7 @@ struct _sandbox_slave_t {
 	LilvNode *ui_node;
 
 	const LilvPlugin *plug;
+	LilvUIs *uis;
 	const LilvUI *ui;
 
 	void *lib;
@@ -297,14 +298,14 @@ sandbox_slave_new(int argc, char **argv, const sandbox_slave_driver_t *driver, v
 		goto fail;
 	}
 
-	LilvUIs *uis = lilv_plugin_get_uis(sb->plug);
-	if(!uis)
+	sb->uis = lilv_plugin_get_uis(sb->plug);
+	if(!sb->uis)
 	{
 		fprintf(stderr, "lilv_plugin_get_uis failed\n");
 		goto fail;
 	}
 
-	if(!(sb->ui = lilv_uis_get_by_uri(uis, sb->ui_node)))
+	if(!(sb->ui = lilv_uis_get_by_uri(sb->uis, sb->ui_node)))
 	{
 		fprintf(stderr, "lilv_uis_get_by_uri failed\n");
 		goto fail;
@@ -322,7 +323,7 @@ sandbox_slave_new(int argc, char **argv, const sandbox_slave_driver_t *driver, v
 #else
 	const char *binary_path = lilv_uri_to_path(lilv_node_as_string(ui_path));
 #endif
-	if(!(sb->lib = dlopen(binary_path, RTLD_LAZY)))
+	if(!(sb->lib = dlopen(binary_path, RTLD_LAZY | RTLD_LOCAL)))
 	{
 		fprintf(stderr, "dlopen failed: %s\n", dlerror());
 		goto fail;
@@ -396,6 +397,11 @@ sandbox_slave_free(sandbox_slave_t *sb)
 
 	if(sb->world)
 	{
+		if(sb->uis)
+		{
+			lilv_uis_free(sb->uis);
+		}
+
 		if(sb->ui_node)
 		{
 			lilv_world_unload_resource(sb->world, sb->ui_node);
