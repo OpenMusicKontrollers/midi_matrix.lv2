@@ -54,6 +54,7 @@ struct _sandbox_slave_t {
 	LilvUIs *uis;
 	const LilvUI *ui;
 
+	bool no_user_resize;
 	void *lib;
 	const LV2UI_Descriptor *desc;
 	void *handle;
@@ -318,6 +319,13 @@ sandbox_slave_new(int argc, char **argv, const sandbox_slave_driver_t *driver, v
 		goto fail;
 	}
 
+	LilvNode *no_user_resize_uri = lilv_new_uri(sb->world, LV2_UI__noUserResize);
+	if(no_user_resize_uri)
+	{
+		sb->no_user_resize = lilv_world_ask(sb->world, sb->ui_node, no_user_resize_uri, NULL);
+		lilv_node_free(no_user_resize_uri);
+	}
+
 #if defined(LILV_0_22)
 	char *binary_path = lilv_file_uri_parse(lilv_node_as_string(ui_path), NULL);
 #else
@@ -564,4 +572,13 @@ sandbox_slave_title_get(sandbox_slave_t *sb)
 		return sb->window_title;
 
 	return NULL;
+}
+
+bool
+sandbox_slave_no_user_resize_get(sandbox_slave_t *sb)
+{
+	if(sb)
+		return sb->no_user_resize;
+
+	return false;
 }

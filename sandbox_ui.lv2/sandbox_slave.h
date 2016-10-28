@@ -66,6 +66,9 @@ sandbox_slave_fd_get(sandbox_slave_t *sb, int *fd);
 const char *
 sandbox_slave_title_get(sandbox_slave_t *sb);
 
+bool
+sandbox_slave_no_user_resize_get(sandbox_slave_t *sb);
+
 #ifdef __cplusplus
 }
 #endif
