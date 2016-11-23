@@ -21,15 +21,6 @@
 @prefix midi_matrix:	<http://open-music-kontrollers.ch/lv2/midi_matrix#> .
 
 # Channel Filter UI
-midi_matrix:channel_filter_1_ui
-	a ui:UI ;
+midi_matrix:channel_filter_4_nk
 	lv2:requiredFeature ui:idleInterface, urid:map ;
-  lv2:extensionData ui:idleInterface, ui:showInterface .
-
-midi_matrix:channel_filter_2_kx
-	a kx:Widget ;
-	lv2:requiredFeature kx:Host, urid:map .
-
-midi_matrix:channel_filter_3_eo
-	a ui:EoUI ;
-	lv2:requiredFeature urid:map .
+  lv2:extensionData ui:idleInterface .

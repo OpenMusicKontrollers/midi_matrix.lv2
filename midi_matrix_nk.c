@@ -23,7 +23,7 @@ lv2ui_descriptor(uint32_t index)
 	switch(index)
 	{
 		case 0:
-			return &channel_filter_eo;
+			return &channel_filter_nk;
 
 		default:
 			return NULL;

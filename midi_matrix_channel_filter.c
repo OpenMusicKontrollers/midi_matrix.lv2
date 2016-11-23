@@ -126,10 +126,14 @@ run(LV2_Handle instance, uint32_t sample_count)
 		if(ev->body.type == handle->uris.midi_MidiEvent)
 		{
 			int64_t frames = ev->time.frames;
-			uint32_t len = ev->body.size;
-			uint8_t *buf = (uint8_t *)(ev+1);
+			const uint32_t len = ev->body.size;
+			const uint8_t *buf = LV2_ATOM_BODY_CONST(&ev->body);
 
-			uint8_t src = buf[0] & 0x0f; // source channel
+			const uint8_t cmd = buf[0] & 0xf0;
+			if(cmd == 0xf0)
+				continue; // ignore system messages
+
+			const uint8_t src = buf[0] & 0x0f; // source channel
 			if(handle->mask[src]) // are there any active output channels at all for this input channel?
 			{
 				uint8_t dst;
@@ -141,7 +145,7 @@ run(LV2_Handle instance, uint32_t sample_count)
 						LV2_Atom midiatom;
 						midiatom.type = handle->uris.midi_MidiEvent;
 						midiatom.size = len;
-						uint8_t m = (buf[0] & 0xf0) | dst; // rewrite channel number
+						const uint8_t m = (buf[0] & 0xf0) | dst; // rewrite channel number
 						
 						lv2_atom_forge_frame_time(forge, frames);
 						lv2_atom_forge_raw(forge, &midiatom, sizeof(LV2_Atom));

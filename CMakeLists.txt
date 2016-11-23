@@ -3,16 +3,36 @@ cmake_minimum_required(VERSION 2.8)
 project(midi_matrix.lv2)
 
 include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/sandbox_ui.lv2)
-include_directories(${PROJECT_SOURCE_DIR}/symap)
+include_directories(${PROJECT_SOURCE_DIR}/pugl)
 
+set(CMAKE_FIND_FRAMEWORK FIRST)
+
+set(CMAKE_C_FLAGS "-fdata-sections -ffunction-sections ${CMAKE_C_FLAGS}")
 set(CMAKE_C_FLAGS "-std=gnu11 -Wextra -Wno-unused-parameter -ffast-math -fvisibility=hidden ${CMAKE_C_FLAGS}")
-set(CMAKE_C_FLAGS "-Wshadow -Wimplicit-function-declaration -Wmissing-prototypes -Wstrict-prototypes ${CMAKE_C_FLAGS}")
+set(CMAKE_C_FLAGS "-Wshadow -Wimplicit-function-declaration -Wredundant-decls -Wmissing-prototypes -Wstrict-prototypes ${CMAKE_C_FLAGS}")
+
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 	set(CMAKE_MODULE_LINKER_FLAGS "-Wl,-z,defs ${CMAKE_MODULE_LINKER_FLAGS}")
 	set(CMAKE_MODULE_LINKER_FLAGS "-Wl,-z,nodelete ${CMAKE_MODULE_LINKER_FLAGS}")
+elseif(WIN32)
+	set(CMAKE_C_FLAGS "-mstackrealign ${CMAKE_C_FLAGS}")
 endif()
+
+if(APPLE)
+	set(CMAKE_MODULE_LINKER_FLAGS "-Wl,-dead_strip ${CMAKE_MODULE_LINKER_FLAGS}")
+else()
+	set(CMAKE_MODULE_LINKER_FLAGS "-Wl,--gc-sections -Wl,-s ${CMAKE_MODULE_LINKER_FLAGS}")
+endif()
+
 add_definitions("-D_GNU_SOURCE=1") # asprintf
+
+if(WIN32)
+	set(MIDI_MATRIX_UI_TYPE "WindowsUI")
+elseif(APPLE)
+	set(MIDI_MATRIX_UI_TYPE "CocoaUI")
+else()
+	set(MIDI_MATRIX_UI_TYPE "X11UI")
+endif()
 
 file(STRINGS "VERSION" MIDI_MATRIX_VERSION)
 string(REPLACE "." ";" VERSION_LIST ${MIDI_MATRIX_VERSION})
@@ -21,83 +41,91 @@ list(GET VERSION_LIST 1 MIDI_MATRIX_MINOR_VERSION)
 list(GET VERSION_LIST 2 MIDI_MATRIX_MICRO_VERSION)
 add_definitions("-DMIDI_MATRIX_VERSION=\"${MIDI_MATRIX_VERSION}\"")
 
-set(DEST lib/lv2/midi_matrix.lv2)
+if(NOT DEFINED PLUGIN_DEST)
+	set(PLUGIN_DEST lib/lv2/midi_matrix.lv2)
+endif()
 
 find_package(PkgConfig) # ${PKG_CONFIG_FOUND}
 
 pkg_search_module(LV2 REQUIRED lv2>=1.10)
 include_directories(${LV2_INCLUDE_DIRS})
 
-pkg_search_module(ELM REQUIRED elementary>=1.8)
-include_directories(${ELM_INCLUDE_DIRS})
+set(LIBS_UI m)
 
-pkg_search_module(NANOMSG REQUIRED libnanomsg>=1.0 nanomsg>=1.0)
-include_directories(${NANOMSG_INCLUDE_DIRS})
+find_package(OpenGL)
+if(${OPENGL_FOUND})
+	set(LIBS_UI ${LIBS_UI} ${OPENGL_LIBRARIES})
+else() # try pkg-config
+	pkg_search_module(GL REQUIRED gl)
+	if(${GL_FOUND})
+		set(LIBS_UI ${LIBS_UI} ${GL_LDFLAGS})
+	else()
+		message(FATAL_ERROR "OpenGL not found")
+	endif()
+endif()
+add_definitions("-DPUGL_HAVE_GL")
 
-pkg_search_module(SRATOM REQUIRED sratom-0>=0.4.0)
-include_directories(${SRATOM_INCLUDE_DIRS})
+if(WIN32)
+	find_library(GDI32_LIBRARY NAMES gdi32)
+	if(GDI32_LIBRARY)
+		set(LIBS_UI ${LIBS_UI} ${GDI32_LIBRARY})
+	else()
+		message(FATAL_ERROR "gdi32 library not found")
+	endif()
 
-pkg_search_module(LILV REQUIRED lilv-0>=0.20.0)
-include_directories(${LILV_INCLUDE_DIRS})
-if((${LILV_VERSION} VERSION_EQUAL "0.22.0") OR (${LILV_VERSION} VERSION_GREATER "0.22.0"))
-	add_definitions("-DLILV_0_22")
+	find_library(USER32_LIBRARY NAMES user32)
+	if(USER32_LIBRARY)
+		set(LIBS_UI ${LIBS_UI} ${USER32_LIBRARY})
+	else()
+		message(FATAL_ERROR "user32 library not found")
+	endif()
+
+	set(TAR_UI ${TAR_UI} pugl/pugl/pugl_win.cpp)
+
+elseif(APPLE)
+	find_library(COCOA_LIBRARY NAMES Cocoa)
+	if(COCOA_LIBRARY)
+		set(LIBS_UI ${LIBS_UI} ${COCOA_LIBRARY})
+	else()
+		message(FATAL_ERROR "Cocoa framework not found")
+	endif()
+
+	set(TAR_UI ${TAR_UI} pugl/pugl/pugl_osx.m)
+
+else() # GNU/Linux
+	pkg_search_module(X11 REQUIRED x11>=1.6)
+	include_directories(${X11_INCLUDE_DIRS})
+	set(LIBS_UI ${LIBS_UI} ${X11_LDFLAGS})
+
+	pkg_search_module(XEXT REQUIRED xext>=1.3)
+	include_directories(${XEXT_INCLUDE_DIRS})
+	set(LIBS_UI ${LIBS_UI} ${XEXT_LDFLAGS})
+
+	set(TAR_UI ${TAR_UI} pugl/pugl/pugl_x11.c)
 endif()
 
 add_library(midi_matrix MODULE
 	midi_matrix.c
 	midi_matrix_channel_filter.c)
 set_target_properties(midi_matrix PROPERTIES PREFIX "")
-install(TARGETS midi_matrix DESTINATION ${DEST})
+if(NOT WIN32)
+set_target_properties(midi_matrix PROPERTIES LINK_FLAGS "-Wl,-e,lv2_descriptor")
+endif()
+install(TARGETS midi_matrix DESTINATION ${PLUGIN_DEST})
 
 add_library(midi_matrix_ui MODULE
-	${PROJECT_SOURCE_DIR}/sandbox_ui.lv2/sandbox_ui.c
-	${PROJECT_SOURCE_DIR}/sandbox_ui.lv2/sandbox_master.c
-	midi_matrix_ui.c)
-target_link_libraries(midi_matrix_ui
-	${NANOMSG_LDFLAGS}
-	${SRATOM_LDFLAGS})
+	midi_matrix_nk.c
+	midi_matrix_channel_filter_nk.c
+	${TAR_UI})
+target_link_libraries(midi_matrix_ui ${LIBS_UI})
 set_target_properties(midi_matrix_ui PROPERTIES PREFIX "")
-install(TARGETS midi_matrix_ui DESTINATION ${DEST})
-
-add_library(midi_matrix_eo MODULE
-	midi_matrix_eo.c
-	midi_matrix_channel_filter_eo.c)
-target_link_libraries(midi_matrix_eo
-	${ELM_LDFLAGS})
-set_target_properties(midi_matrix_eo PROPERTIES PREFIX "")
-install(TARGETS midi_matrix_eo DESTINATION ${DEST})
-
-add_executable(sandbox_efl
-	${PROJECT_SOURCE_DIR}/sandbox_ui.lv2/sandbox_slave.c
-	${PROJECT_SOURCE_DIR}/sandbox_ui.lv2/sandbox_efl.c
-	${PROJECT_SOURCE_DIR}/symap/symap.c)
-target_link_libraries(sandbox_efl
-	${ELM_LDFLAGS}
-	${NANOMSG_LDFLAGS}
-	${LILV_LDFLAGS})
-install(TARGETS sandbox_efl DESTINATION ${DEST})
-
-find_program (EDJE_CC NAMES edje_cc)
-if (EDJE_CC_NOTFOUND)
-  message (SEND_ERROR "edje_cc not found")
-else (EDJE_CC_NOTFOUND)
-  message (STATUS "edje_cc found: " ${EDJE_CC})
-endif (EDJE_CC_NOTFOUND)
-
-add_custom_command(
-	OUTPUT "${PROJECT_BINARY_DIR}/midi_matrix.edj"
-	COMMAND ${EDJE_CC} ARGS
-		"-fd" "${PROJECT_SOURCE_DIR}"
-		"-id" "${PROJECT_SOURCE_DIR}"
-		"${PROJECT_SOURCE_DIR}/midi_matrix.edc"
-		"${PROJECT_BINARY_DIR}/midi_matrix.edj"
-	MAIN_DEPENDENCY
-		"${PROJECT_SOURCE_DIR}/midi_matrix.edc"
-		"${PROJECT_SOURCE_DIR}/midi_matrix_channel_filter.edc")
-add_custom_target(THEME ALL DEPENDS "${PROJECT_BINARY_DIR}/midi_matrix.edj")
+if(NOT WIN32)
+set_target_properties(midi_matrix_ui PROPERTIES LINK_FLAGS "-Wl,-e,lv2ui_descriptor")
+endif()
+install(TARGETS midi_matrix_ui DESTINATION ${PLUGIN_DEST})
 
 configure_file(${PROJECT_SOURCE_DIR}/manifest.ttl.in ${PROJECT_BINARY_DIR}/manifest.ttl)
-install(FILES ${PROJECT_BINARY_DIR}/manifest.ttl DESTINATION ${DEST})
-install(FILES ${PROJECT_BINARY_DIR}/midi_matrix.edj DESTINATION ${DEST})
-install(FILES ${PROJECT_SOURCE_DIR}/midi_matrix.ttl DESTINATION ${DEST})
-install(FILES ${PROJECT_SOURCE_DIR}/midi_matrix_ui.ttl DESTINATION ${DEST})
+install(FILES ${PROJECT_BINARY_DIR}/manifest.ttl DESTINATION ${PLUGIN_DEST})
+install(FILES ${PROJECT_SOURCE_DIR}/midi_matrix.ttl DESTINATION ${PLUGIN_DEST})
+install(FILES ${PROJECT_SOURCE_DIR}/midi_matrix_ui.ttl DESTINATION ${PLUGIN_DEST})
+install(FILES ${PROJECT_SOURCE_DIR}/nuklear/extra_font/Cousine-Regular.ttf DESTINATION ${PLUGIN_DEST})

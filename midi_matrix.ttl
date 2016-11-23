@@ -16,7 +16,6 @@
 @prefix foaf:	<http://xmlns.com/foaf/0.1/> .
 @prefix doap:	<http://usefulinc.com/ns/doap#> .
 @prefix lv2:	<http://lv2plug.in/ns/lv2core#> .
-@prefix ui:		<http://lv2plug.in/ns/extensions/ui#> .
 @prefix atom:	<http://lv2plug.in/ns/ext/atom#> .
 @prefix midi:	<http://lv2plug.in/ns/ext/midi#> .
 @prefix urid: <http://lv2plug.in/ns/ext/urid#> .
@@ -42,24 +41,6 @@ proj:midi_matrix
 	a doap:Project ;
 	doap:maintainer omk:me ;
 	doap:name "MIDI Matrix Bundle" .
-
-# Channel Filter UI
-midi_matrix:channel_filter_eo
-	a ui:EoUI ;
-	lv2:extensionData ui:resize ;
-	lv2:optionalFeature ui:resize .
-midi_matrix:channel_filter_ui
-	a ui:UI ;
-	lv2:requiredFeature ui:idleInterface ;
-  lv2:extensionData ui:idleInterface, ui:showInterface .
-midi_matrix:channel_filter_x11
-	a ui:X11UI ;
-	lv2:requiredFeature ui:idleInterface ;
-	lv2:optionalFeature ui:resize ;
-  lv2:extensionData ui:idleInterface, ui:resize .
-midi_matrix:channel_filter_kx
-	a kx:Widget ;
-	lv2:requiredFeature kx:Host .
 
 # Channel Filter Plugin
 midi_matrix:channel_filter
