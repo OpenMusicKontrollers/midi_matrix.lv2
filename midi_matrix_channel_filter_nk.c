@@ -71,27 +71,45 @@ _change(void *data, uintptr_t src_id, uintptr_t snk_id, bool state)
 }
 
 static void
+_clear(plughandle_t *handle)
+{
+	for(int src_id = 0; src_id < 0x10; src_id++)
+	{
+		uint16_t *dst = &handle->mask[src_id];
+		*dst = 0x0; // clear
+		
+		const float val = *dst;
+		handle->writer(handle->controller, src_id, sizeof(float), 0, &val);
+	
+		for(int snk_id = 0; snk_id < 0x10; snk_id++)
+			nk_patcher_connected_set(&handle->patch, src_id, snk_id, false, NK_PATCHER_TYPE_DIRECT);
+	}
+
+	nk_pugl_post_redisplay(&handle->win);
+}
+
+static void
 _expose(struct nk_context *ctx, struct nk_rect wbounds, void *data)
 {
 	plughandle_t *handle = data;
 
 	const float dy = handle->dy;
 	struct nk_style *style = &ctx->style;
-	const struct nk_vec2 group_padding = nk_panel_get_padding(style, NK_PANEL_WINDOW);
+	const struct nk_vec2 window_padding = nk_panel_get_padding(style, NK_PANEL_WINDOW);
 
 	if(nk_begin(ctx, "ChannelFilter", wbounds, NK_WINDOW_NO_SCROLLBAR))
 	{
 		nk_window_set_bounds(ctx, wbounds);
 		struct nk_panel *center = nk_window_get_panel(ctx);
 
-		struct nk_rect bounds = center->bounds;
-		bounds.x += group_padding.x;
-		bounds.y += group_padding.y;
-		bounds.w -= 2*group_padding.y;
-		bounds.h -= 2*group_padding.y;
-
-		nk_layout_row_dynamic(ctx, wbounds.h, 1);
+		const float widget_h = center->bounds.h - 3*window_padding.y - dy;
+		nk_layout_row_dynamic(ctx, widget_h, 1);
 		nk_patcher_render(&handle->patch, ctx, wbounds, _change, handle);
+
+		nk_layout_row_dynamic(ctx, dy, 2);
+		if(nk_button_label(ctx, "clear"))
+			_clear(handle);
+		nk_label(ctx, "MidiMatrix.lv2: "MIDI_MATRIX_VERSION, NK_TEXT_RIGHT);
 	}
 	nk_end(ctx);
 }
