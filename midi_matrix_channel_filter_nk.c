@@ -153,7 +153,7 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri,
 
 	lv2_atom_forge_init(&handle->forge, handle->map);
 
-	handle->ui_floatProtocol = handle->map->map(handle->map->handle, LV2_UI__floatProtocol);
+	handle->ui_floatProtocol = handle->map->map(handle->map->handle, LV2_UI_PREFIX"floatProtocol");
 
 	handle->controller = controller;
 	handle->writer = write_function;
