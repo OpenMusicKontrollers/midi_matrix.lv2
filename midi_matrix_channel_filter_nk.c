@@ -43,8 +43,6 @@ struct _plughandle_t {
 	LV2UI_Controller *controller;
 	LV2UI_Write_Function writer;
 
-	float dy;
-
 	uint16_t mask [0x10];
 
 	nk_patcher_t patch;
@@ -93,7 +91,7 @@ _expose(struct nk_context *ctx, struct nk_rect wbounds, void *data)
 {
 	plughandle_t *handle = data;
 
-	const float dy = handle->dy;
+	const float dy = 20.f * nk_pugl_get_scale(&handle->win);
 	struct nk_style *style = &ctx->style;
 	const struct nk_vec2 window_padding = nk_panel_get_padding(style, NK_PANEL_WINDOW);
 
@@ -158,36 +156,25 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri,
 	handle->controller = controller;
 	handle->writer = write_function;
 
-	const char *NK_SCALE = getenv("NK_SCALE");
-	const float scale = NK_SCALE ? atof(NK_SCALE) : 1.f;
-	handle->dy = 20.f * scale;
-
 	nk_pugl_config_t *cfg = &handle->win.cfg;
-	cfg->width = 640* scale;
-	cfg->height = 640* scale;
+	cfg->width = 640;
+	cfg->height = 640;
 	cfg->resizable = true;
+	cfg->fixed_aspect = true;
 	cfg->ignore = false;
 	cfg->class = "channel_filter";
 	cfg->title = "Channel Filter";
 	cfg->parent = (intptr_t)parent;
+	cfg->host_resize = host_resize;
 	cfg->data = handle;
 	cfg->expose = _expose;
 
-	char *path;
-	if(asprintf(&path, "%sCousine-Regular.ttf", bundle_path) == -1)
-		path = NULL;
-
-	cfg->font.face = path;
-	cfg->font.size = 13 * scale;
+	if(asprintf(&cfg->font.face, "%sCousine-Regular.ttf", bundle_path) == -1)
+		cfg->font.face= NULL;
+	cfg->font.size = 13;
 	
 	*(intptr_t *)widget = nk_pugl_init(&handle->win);
 	nk_pugl_show(&handle->win);
-
-	if(path)
-		free(path);
-
-	if(host_resize)
-		host_resize->ui_resize(host_resize->handle, cfg->width, cfg->height);
 
 	nk_patcher_init(&handle->patch, 0.8f);
 	nk_patcher_reinit(&handle->patch, 0x10, 0x10);
@@ -217,6 +204,8 @@ cleanup(LV2UI_Handle instance)
 
 	nk_patcher_deinit(&handle->patch);
 
+	if(handle->win.cfg.font.face)
+		free(handle->win.cfg.font.face);
 	nk_pugl_hide(&handle->win);
 	nk_pugl_shutdown(&handle->win);
 
