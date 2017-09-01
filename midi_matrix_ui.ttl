@@ -23,4 +23,5 @@
 # Channel Filter UI
 midi_matrix:channel_filter_4_nk
 	lv2:requiredFeature ui:idleInterface, urid:map ;
-  lv2:extensionData ui:idleInterface .
+	lv2:optionalFeature ui:resize ;
+  lv2:extensionData ui:idleInterface, ui:resize .
