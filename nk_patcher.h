@@ -415,13 +415,13 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 		// handle mouse input
 		if(nk_input_is_mouse_hovering_rect(in, bounds))
 		{
-			if(in->mouse.scroll_delta)
+			if(in->mouse.scroll_delta.y)
 			{
-				patch->scale *= 1.0 + in->mouse.scroll_delta * 0.05;
+				patch->scale *= 1.0 + in->mouse.scroll_delta.y * 0.05;
 				patch->scale = NK_CLAMP(0.1, patch->scale, 0.8);
 				_precalc(patch, bounds);
 
-				in->mouse.scroll_delta = 0.f;
+				in->mouse.scroll_delta.y = 0.f;
 			}
 
 			_abs_to_rel(patch, in->mouse.pos.x, in->mouse.pos.y, &src_ptr, &snk_ptr);
