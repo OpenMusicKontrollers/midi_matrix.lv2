@@ -98,7 +98,6 @@ _expose(struct nk_context *ctx, struct nk_rect wbounds, void *data)
 	const char *window_name = "ChannelFilter";
 	if(nk_begin(ctx, window_name, wbounds, NK_WINDOW_NO_SCROLLBAR))
 	{
-		nk_window_set_bounds(ctx, window_name, wbounds);
 		struct nk_panel *center = nk_window_get_panel(ctx);
 
 		const float widget_h = center->bounds.h - 3*window_padding.y - dy;
