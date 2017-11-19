@@ -44,6 +44,7 @@ struct _nk_patcher_connection_t {
 	bool state;
 	nk_patcher_type_t type;
 	int enm;
+	bool drawing;
 };
 
 struct _nk_patcher_t {
@@ -62,6 +63,8 @@ struct _nk_patcher_t {
 	float W2, H2;
 	float span, span1, span2;
 	float x0, y0;
+
+	bool drawing_state;
 };
 
 enum {
@@ -426,6 +429,8 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 
 			_abs_to_rel(patch, in->mouse.pos.x, in->mouse.pos.y, &src_ptr, &snk_ptr);
 
+			const bool drawing = nk_input_is_mouse_down(in, NK_BUTTON_LEFT);
+
 			// handle state toggling
 			if(change && nk_input_is_mouse_pressed(in, NK_BUTTON_LEFT))
 			{
@@ -435,7 +440,9 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 					nk_patcher_port_t *snk_port = &patch->snks[snk_ptr];
 					nk_patcher_connection_t *conn = &patch->connections[src_ptr][snk_ptr];
 
-					change(data, src_port->id, snk_port->id, !conn->state);
+					patch->drawing_state = !conn->state;
+					change(data, src_port->id, snk_port->id, patch->drawing_state);
+					conn->drawing = true;
 				}
 				else if(src_ptr != -1)
 				{
@@ -474,6 +481,19 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 					}
 				}
 			}
+			else if(change && drawing)
+			{
+				if( (src_ptr != -1) && (snk_ptr != -1) )
+				{
+					nk_patcher_port_t *src_port = &patch->srcs[src_ptr];
+					nk_patcher_port_t *snk_port = &patch->snks[snk_ptr];
+					nk_patcher_connection_t *conn = &patch->connections[src_ptr][snk_ptr];
+
+					if(!conn->drawing)
+						change(data, src_port->id, snk_port->id, patch->drawing_state);
+					conn->drawing = true;
+				}
+			}
 		}
 
 		// reset patch fields
@@ -482,6 +502,9 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 			for(int snk_idx = 0; snk_idx < patch->snk_n; snk_idx++)
 			{
 				nk_patcher_connection_t *conn = &patch->connections[src_idx][snk_idx];
+
+				if( (src_ptr != src_idx) || (snk_ptr != snk_idx) )
+					conn->drawing = false;
 
 				conn->enm = 0;
 				switch(conn->type)
