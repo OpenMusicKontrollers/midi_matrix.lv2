@@ -75,12 +75,36 @@ _clear(plughandle_t *handle)
 	{
 		uint16_t *dst = &handle->mask[src_id];
 		*dst = 0x0; // clear
-		
+
 		const float val = *dst;
 		handle->writer(handle->controller, src_id, sizeof(float), 0, &val);
-	
+
 		for(int snk_id = 0; snk_id < 0x10; snk_id++)
-			nk_patcher_connected_set(&handle->patch, src_id, snk_id, false, NK_PATCHER_TYPE_DIRECT);
+		{
+			const bool state = false;
+			nk_patcher_connected_set(&handle->patch, src_id, snk_id, state, NK_PATCHER_TYPE_DIRECT);
+		}
+	}
+
+	nk_pugl_post_redisplay(&handle->win);
+}
+
+static void
+_one_to_one(plughandle_t *handle)
+{
+	for(int src_id = 0; src_id < 0x10; src_id++)
+	{
+		uint16_t *dst = &handle->mask[src_id];
+		*dst = (1 << src_id); // 1:1
+
+		const float val = *dst;
+		handle->writer(handle->controller, src_id, sizeof(float), 0, &val);
+
+		for(int snk_id = 0; snk_id < 0x10; snk_id++)
+		{
+			const bool state = (snk_id == src_id);
+			nk_patcher_connected_set(&handle->patch, src_id, snk_id, state, NK_PATCHER_TYPE_DIRECT);
+		}
 	}
 
 	nk_pugl_post_redisplay(&handle->win);
@@ -104,9 +128,11 @@ _expose(struct nk_context *ctx, struct nk_rect wbounds, void *data)
 		nk_layout_row_dynamic(ctx, widget_h, 1);
 		nk_patcher_render(&handle->patch, ctx, wbounds, _change, handle);
 
-		nk_layout_row_dynamic(ctx, dy, 2);
+		nk_layout_row_dynamic(ctx, dy, 3);
 		if(nk_button_label(ctx, "clear"))
 			_clear(handle);
+		if(nk_button_label(ctx, "1:1"))
+			_one_to_one(handle);
 		nk_label(ctx, "MidiMatrix.lv2: "MIDI_MATRIX_VERSION, NK_TEXT_RIGHT);
 	}
 	nk_end(ctx);
@@ -172,7 +198,7 @@ instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri,
 	if(asprintf(&cfg->font.face, "%sCousine-Regular.ttf", bundle_path) == -1)
 		cfg->font.face= NULL;
 	cfg->font.size = 13;
-	
+
 	*(intptr_t *)widget = nk_pugl_init(&handle->win);
 	nk_pugl_show(&handle->win);
 
@@ -269,7 +295,7 @@ extension_data(const char *uri)
 		return &idle_ext;
 	else if(!strcmp(uri, LV2_UI__resize))
 		return &resize_ext;
-		
+
 	return NULL;
 }
 
