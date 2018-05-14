@@ -13,18 +13,15 @@ Get more information at: [http://open-music-kontrollers.ch/lv2/midi_matrix](http
 ### Dependencies
 
 * [LV2](http://lv2plug.in) (LV2 Plugin Standard)
-* [pugl](http://drobilla.net/software/pugl) (Portable API for OpenGL GUIs)
-* [nuklear](https://github.com/vurtun/nuklear) (Immediate-mode GUI)
 
 ### Build / install
 
-	git clone https://github.com/OpenMusicKontrollers/midi_matrix.lv2.git
+	git clone https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2.git
 	cd midi_matrix.lv2
-	mkdir build
+	meson build
 	cd build
-	cmake  ..
-	make
-	sudo make install
+	ninja -j4
+	sudo ninja install
 
 ### License
 

@@ -34,13 +34,13 @@ kx:Host
 # Channel Filter Plugin
 midi_matrix:channel_filter
 	a lv2:Plugin ;
-	lv2:minorVersion @MIDI_MATRIX_MINOR_VERSION@ ;
-	lv2:microVersion @MIDI_MATRIX_MICRO_VERSION@ ;
-	lv2:binary <midi_matrix@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	lv2:minorVersion @MINOR_VERSION@ ;
+	lv2:microVersion @MICRO_VERSION@ ;
+	lv2:binary <midi_matrix@MODULE_SUFFIX@> ;
 	ui:ui midi_matrix:channel_filter_4_nk ;
 	rdfs:seeAlso <midi_matrix.ttl> .
 
 midi_matrix:channel_filter_4_nk
-	a ui:@MIDI_MATRIX_UI_TYPE@;
-	ui:binary <midi_matrix_ui@CMAKE_SHARED_MODULE_SUFFIX@> ;
+	a ui:@UI_TYPE@;
+	ui:binary <midi_matrix_ui@MODULE_SUFFIX@> ;
 	rdfs:seeAlso <midi_matrix_ui.ttl> .
