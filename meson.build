@@ -12,6 +12,7 @@ lv2_dep = dependency('lv2', version : '>=1.14.0')
 
 dsp_deps = [m_dep, lv2_dep]
 ui_deps = [m_dep, lv2_dep]
+ui_links = []
 
 pugl_inc = include_directories('pugl')
 inc_dir = [pugl_inc]
@@ -53,12 +54,11 @@ if host_machine.system() == 'windows'
 	ui_deps += cc.find_library('user32')
 	ui_srcs += 'pugl/pugl/pugl_win.cpp'
 elif host_machine.system() == 'darwin'
-	#add_languages('objc')
+	add_languages('objc')
 	conf_data.set('UI_TYPE', 'CocoaUI')
-	#ui_deps += cc.find_library('Cocoa')
-	#ui_deps += cc.find_library('gl')
-	#ui_deps += dependency('appleframeworks', modules : 'cocoa')
-	#ui_srcs += 'pugl/pugl/pugl_osx.m'
+	ui_links += ['-framework', 'OpenGL']
+	ui_links += ['-framework', 'Cocoa']
+	ui_srcs += 'pugl/pugl/pugl_osx.m'
 else
 	conf_data.set('UI_TYPE', 'X11UI')
 	ui_deps += dependency('gl')
@@ -80,6 +80,7 @@ ui = shared_module('midi_matrix_ui', ui_srcs,
 	include_directories : inc_dir,
 	name_prefix : '',
 	dependencies : ui_deps,
+	link_args : ui_links,
 	install : true,
 	install_dir : inst_dir)
 
