@@ -37,6 +37,11 @@ folder out of the platform folder of the downloaded package into your
 
 * [ArchLinux](https://www.archlinux.org/packages/community/x86_64/midi_matrix.lv2/)
 
+### Bugs and feature requests
+
+* [Gitlab](https://gitlab.com/OpenMusicKontrollers/midi_matrix.lv2)
+* [Github](https://github.com/OpenMusicKontrollers/midi_matrix.lv2)
+
 ### Plugins
 
 ### Channel Filter
