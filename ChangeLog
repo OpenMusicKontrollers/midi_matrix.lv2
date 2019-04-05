@@ -1,0 +1,13 @@
+# Changelog
+
+## [0.22.0] - 15 Apr 2019
+
+### Added
+
+* ui resize extension
+* dynamic drawing/erasing while mouse down
+* button for one-to-one connection layout
+
+### Changed
+
+* build system from CMake to meson
