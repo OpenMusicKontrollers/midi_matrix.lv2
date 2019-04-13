@@ -2,6 +2,13 @@
 
 ### An LV2 MIDI channel matrix patcher
 
+Things that can be accomplished with this plugin:
+
+* MIDI channel filtering (e.g. blocking of specific channels)
+* MIDI channel multiplication (e.g. send events from channel X to channels X, Y and Z)
+* MIDI channel rerouting (e.g send events from channel X to channel Y)
+* And any possible combination thereof
+
 #### Build status
 
 [![build status](https://gitlab.com/OpenMusicKontrollers/midi_matrix.lv2/badges/master/build.svg)](https://gitlab.com/OpenMusicKontrollers/midi_matrix.lv2/commits/master)
