@@ -5,6 +5,7 @@ project('midi_matrix.lv2', 'c', default_options : [
 	'b_lto=false',
 	'c_std=c11'])
 
+build_root = meson.build_root()
 cc = meson.get_compiler('c')
 
 m_dep = cc.find_library('m')
@@ -123,6 +124,6 @@ endif
 
 if lv2lint.found()
 	test('LV2 lint', lv2lint,
-		args : ['-Ewarn',
+		args : ['-Ewarn', '-I', join_paths(build_root, ''),
 			'http://open-music-kontrollers.ch/lv2/midi_matrix#channel_filter'])
 endif
