@@ -1,0 +1,3 @@
+option('lv2libdir',
+	type : 'string',
+	value : 'lib/lv2')
