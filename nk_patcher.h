@@ -18,7 +18,12 @@
 #ifndef _NK_PATCHER_H
 #define _NK_PATCHER_H
 
-typedef enum _nk_patcher_type_t nk_patcher_type_t;
+typedef enum _nk_patcher_type_t {
+	NK_PATCHER_TYPE_DIRECT,
+	NK_PATCHER_TYPE_FEEDBACK,
+	NK_PATCHER_TYPE_INDIRECT
+} nk_patcher_type_t;
+
 typedef struct _nk_patcher_port_t nk_patcher_port_t;
 typedef struct _nk_patcher_connection_t nk_patcher_connection_t;
 typedef struct _nk_patcher_t nk_patcher_t;
@@ -26,12 +31,6 @@ typedef void (*nk_patcher_fill_t)(void *data, uintptr_t src_id, uintptr_t snk_id
 	bool *state, nk_patcher_type_t *type);
 typedef void (nk_patcher_change_t)(void *data, uintptr_t src_id, uintptr_t snk_id,
 	bool state);
-
-enum _nk_patcher_type_t {
-	NK_PATCHER_TYPE_DIRECT,
-	NK_PATCHER_TYPE_FEEDBACK,
-	NK_PATCHER_TYPE_INDIRECT
-};
 
 struct _nk_patcher_port_t {
 	int idx;
@@ -108,18 +107,9 @@ nk_patcher_src_label_set(nk_patcher_t *patch, int src_idx, const char *src_label
 static int
 nk_patcher_snk_label_set(nk_patcher_t *patch, int snk_idx, const char *snk_label);
 
-static int
-nk_patcher_src_group_set(nk_patcher_t *patch, int src_idx, const char *src_group);
-
-static int
-nk_patcher_snk_group_set(nk_patcher_t *patch, int snk_idx, const char *snk_group);
-
 static void
 nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bounds,
 	nk_patcher_change_t *change, void *data);
-
-static void
-nk_patcher_fill(nk_patcher_t *patch, nk_patcher_fill_t fill, void *data);
 
 #endif // _NK_PATCHER_H
 
@@ -777,26 +767,6 @@ nk_patcher_render(nk_patcher_t *patch, struct nk_context *ctx, struct nk_rect bo
 			_rel_to_abs(patch, src_ptr + 1, snk_ptr + 0, &p[6], &p[7]);
 
 			nk_stroke_polygon(canvas, p, 4, 2.f, bright);
-		}
-	}
-}
-
-static void
-nk_patcher_fill(nk_patcher_t *patch, nk_patcher_fill_t fill, void *data)
-{
-	if(!fill)
-		return;
-
-	for(int src_idx=0; src_idx<patch->src_n; src_idx++)
-	{
-		nk_patcher_port_t *src_port = &patch->srcs[src_idx];
-
-		for(int snk_idx=0; snk_idx<patch->snk_n; snk_idx++)
-		{
-			nk_patcher_port_t *snk_port = &patch->snks[snk_idx];
-			nk_patcher_connection_t *conn = &patch->connections[src_idx][snk_idx];
-
-			fill(data, src_port->id, snk_port->id, &conn->state, &conn->type);
 		}
 	}
 }

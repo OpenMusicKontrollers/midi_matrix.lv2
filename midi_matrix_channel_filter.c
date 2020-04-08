@@ -35,7 +35,8 @@ struct _Handle {
 };
 
 static LV2_Handle
-instantiate(const LV2_Descriptor* descriptor, double rate, const char *bundle_path, const LV2_Feature *const *features)
+instantiate(const LV2_Descriptor* descriptor, double rate __attribute__((unused)),
+	const char *bundle_path __attribute__((unused)), const LV2_Feature *const *features)
 {
 	int i;
 	Handle *handle = (Handle *)calloc(1, sizeof(Handle));
@@ -95,14 +96,7 @@ connect_port(LV2_Handle instance, uint32_t port, void *data)
 }
 
 static void
-activate(LV2_Handle instance)
-{
-	Handle *handle = (Handle *)instance;
-	//nothing
-}
-
-static void
-run(LV2_Handle instance, uint32_t sample_count)
+run(LV2_Handle instance, uint32_t nsamples __attribute__((unused)))
 {
 	Handle *handle = (Handle *)instance;
 
@@ -162,13 +156,6 @@ run(LV2_Handle instance, uint32_t sample_count)
 }
 
 static void
-deactivate(LV2_Handle instance)
-{
-	Handle *handle = (Handle *)instance;
-	//nothing
-}
-
-static void
 cleanup(LV2_Handle instance)
 {
 	Handle *handle = (Handle *)instance;
@@ -177,7 +164,7 @@ cleanup(LV2_Handle instance)
 }
 
 static const void*
-extension_data(const char* uri)
+extension_data(const char* uri __attribute__((unused)))
 {
 	//nothing
 	return NULL;
@@ -187,9 +174,9 @@ const LV2_Descriptor channel_filter = {
 	.URI						= MIDI_MATRIX_CHANNEL_FILTER_URI,
 	.instantiate		= instantiate,
 	.connect_port		= connect_port,
-	.activate				= activate,
+	.activate				= NULL,
 	.run						= run,
-	.deactivate			= deactivate,
+	.deactivate			= NULL,
 	.cleanup				= cleanup,
 	.extension_data	= extension_data
 };

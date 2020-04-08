@@ -139,10 +139,10 @@ _expose(struct nk_context *ctx, struct nk_rect wbounds, void *data)
 }
 
 static LV2UI_Handle
-instantiate(const LV2UI_Descriptor *descriptor, const char *plugin_uri,
-	const char *bundle_path, LV2UI_Write_Function write_function,
-	LV2UI_Controller controller, LV2UI_Widget *widget,
-	const LV2_Feature *const *features)
+instantiate(const LV2UI_Descriptor *descriptor,
+	const char *plugin_uri __attribute__((unused)), const char *bundle_path,
+	LV2UI_Write_Function write_function, LV2UI_Controller controller,
+	LV2UI_Widget *widget, const LV2_Feature *const *features)
 {
 	plughandle_t *handle = calloc(1, sizeof(plughandle_t));
 	if(!handle)
@@ -239,7 +239,7 @@ cleanup(LV2UI_Handle instance)
 }
 
 static void
-port_event(LV2UI_Handle instance, uint32_t index, uint32_t size,
+port_event(LV2UI_Handle instance, uint32_t index, uint32_t size __attribute__((unused)),
 	uint32_t protocol, const void *buf)
 {
 	plughandle_t *handle = instance;
