@@ -77,7 +77,7 @@ The _Midi Matrix - Channel Filter_ is a 3-in-1 filter plugin with a simple UI en
 
 #### License
 
-Copyright (c) 2015-2016 Hanspeter Portner (dev@open-music-kontrollers.ch)
+Copyright (c) 2015-2020 Hanspeter Portner (dev@open-music-kontrollers.ch)
 
 This is free software: you can redistribute it and/or modify
 it under the terms of the Artistic License 2.0 as published by
