@@ -53,7 +53,7 @@ folder out of the platform folder of the downloaded package into your
 
 ### Channel Filter
 
-![Through](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/plain/screenshots/screenshot_1.png)
+![Through](/screenshots/screenshot_1.png)
 
 The _Midi Matrix - Channel Filter_ is a 3-in-1 filter plugin with a simple UI enabling you to easily accomplish:
 
