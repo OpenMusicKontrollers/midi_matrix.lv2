@@ -36,8 +36,8 @@
 
 #define MIDI_MATRIX_CHANNEL_FILTER_NK_URI		MIDI_MATRIX_URI"#channel_filter_4_nk"
 
-const LV2_Descriptor channel_filter;
+extern const LV2_Descriptor channel_filter;
 
-const LV2UI_Descriptor channel_filter_nk;
+extern const LV2UI_Descriptor channel_filter_nk;
 
 #endif // _MIDI_MATRIX_LV2_H
