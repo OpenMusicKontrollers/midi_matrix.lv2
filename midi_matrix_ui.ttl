@@ -16,7 +16,6 @@
 @prefix lv2:	<http://lv2plug.in/ns/lv2core#> .
 @prefix ui:		<http://lv2plug.in/ns/extensions/ui#> .
 @prefix urid:	<http://lv2plug.in/ns/ext/urid#> .
-@prefix kx:		<http://kxstudio.sf.net/ns/lv2ext/external-ui#> .
 
 @prefix midi_matrix:	<http://open-music-kontrollers.ch/lv2/midi_matrix#> .
 
