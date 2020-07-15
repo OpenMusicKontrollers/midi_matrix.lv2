@@ -34,7 +34,7 @@ folder out of the platform folder of the downloaded package into your
 
 #### Stable release
 
-* [midi_matrix.lv2-0.24.0.tar.xz](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.24.0.tar.xz)
+* [midi_matrix.lv2-0.24.0.tar.xz](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.24.0.tar.xz) ([sig](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.24.0.tar.xz.asc))
 
 #### Git repository
 

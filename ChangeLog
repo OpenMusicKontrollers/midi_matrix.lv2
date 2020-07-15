@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.26.0] - 15 Jul 2020
+
+### Removed
+
+* superfluous kxstudio extension definitions from turtle manifests
+
 ## [0.24.0] - 13 Apr 2020
 
 ### Changed
