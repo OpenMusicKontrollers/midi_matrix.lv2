@@ -24,7 +24,7 @@ folder out of the platform folder of the downloaded package into your
 
 #### Stable release
 
-* [midi_matrix.lv2-0.24.0.zip](https://dl.open-music-kontrollers.ch/midi_matrix.lv2/stable/midi_matrix.lv2-0.24.0.zip) ([sig](https://dl.open-music-kontrollers.ch/midi_matrix.lv2/stable/midi_matrix.lv2-0.24.0.zip.sig))
+* [midi_matrix.lv2-0.26.0.zip](https://dl.open-music-kontrollers.ch/midi_matrix.lv2/stable/midi_matrix.lv2-0.26.0.zip) ([sig](https://dl.open-music-kontrollers.ch/midi_matrix.lv2/stable/midi_matrix.lv2-0.26.0.zip.sig))
 
 #### Unstable (nightly) release
 
@@ -34,7 +34,7 @@ folder out of the platform folder of the downloaded package into your
 
 #### Stable release
 
-* [midi_matrix.lv2-0.24.0.tar.xz](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.24.0.tar.xz) ([sig](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.24.0.tar.xz.asc))
+* [midi_matrix.lv2-0.26.0.tar.xz](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.26.0.tar.xz) ([sig](https://git.open-music-kontrollers.ch/lv2/midi_matrix.lv2/snapshot/midi_matrix.lv2-0.26.0.tar.xz.asc))
 
 #### Git repository
 

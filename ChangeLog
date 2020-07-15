@@ -2,6 +2,10 @@
 
 ## [0.26.0] - 15 Jul 2020
 
+### Added
+
+* support for GL double buffering
+
 ### Removed
 
 * superfluous kxstudio extension definitions from turtle manifests
