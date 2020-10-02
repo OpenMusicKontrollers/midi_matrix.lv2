@@ -15,8 +15,7 @@ Things that can be accomplished with this plugin:
 
 ### Binaries
 
-For GNU/Linux (64-bit, 32-bit, armv7), Windows (64-bit, 32-bit) and MacOS
-(64/32-bit univeral).
+For GNU/Linux (64-bit, 32-bit, armv7, arm64).
 
 To install the plugin bundle on your system, simply copy the __midi_matrix.lv2__
 folder out of the platform folder of the downloaded package into your
