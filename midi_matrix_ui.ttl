@@ -16,11 +16,13 @@
 @prefix lv2:	<http://lv2plug.in/ns/lv2core#> .
 @prefix ui:		<http://lv2plug.in/ns/extensions/ui#> .
 @prefix urid:	<http://lv2plug.in/ns/ext/urid#> .
+@prefix opts:	<http://lv2plug.in/ns/ext/options#> .
 
 @prefix midi_matrix:	<http://open-music-kontrollers.ch/lv2/midi_matrix#> .
 
 # Channel Filter UI
 midi_matrix:channel_filter_4_nk
-	lv2:requiredFeature ui:idleInterface, urid:map ;
+	lv2:requiredFeature ui:idleInterface, urid:map, opts:options ;
 	lv2:optionalFeature ui:resize ;
+	opts:supportedOption ui:scaleFactor ;
   lv2:extensionData ui:idleInterface, ui:resize .
