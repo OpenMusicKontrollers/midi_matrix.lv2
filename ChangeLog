@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.28.0] - 15 Jan 2021
+
+### Added
+
+* support for host provided scaling factor
+
 ## [0.26.0] - 15 Jul 2020
 
 ### Added
